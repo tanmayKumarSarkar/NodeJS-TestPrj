@@ -9,14 +9,15 @@ fs.readFile ('index.html', (err, html) => {
 		throw err;
 	}
 	const server = http.createServer ((req, res) => {
+		console.log(`Request URL ${req.url}`);
+		//res.writeHead(200, {'content-type':'text/html'});
 		res.statusCode = 200;
 		res.setHeader ('content-type', 'text/html');
 		res.write (html);
-		res.end ();
+		res.end ('hello T');
 	});
 
 	server.listen (port, hostname, () => {
 		console.log ('server started on '+port);
 	});
 });
-
