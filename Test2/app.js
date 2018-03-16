@@ -58,3 +58,24 @@ var writeme = fs.writeFileSync ('Writeme.txt', readme);*/
   fs.writeFileSync ('Writeme.txt', data);
 });*/
 //fs.unlink('Writeme.txt');
+
+/*var myReadStream = fs.createReadStream(__dirname + '/Readme.txt', 'utf8');
+var myWriteStream = fs.createWriteStream(__dirname + '/Writeme.txt');
+myReadStream.on('data', (chunk)=> {
+  console.log('new chunk of data received : '+ chunk + "/n");
+  myWriteStream.write('Writting data: '+chunk);
+});*/
+//myReadStream.pipe(myWriteStream);
+
+const http = require ('http');
+const server = http.createServer ((req, res) => {
+  console.log(`Request URL ${req.url}`);
+  res.writeHead(200, {'content-type':'text/html'});
+  //var myReadStream = fs.createReadStream(__dirname + '/Readme.txt', 'utf8');
+  var myReadStream = fs.createReadStream(__dirname + '/index.html', 'utf8');
+  myReadStream.pipe(res);
+});
+
+server.listen (3000, '127.0.0.1', () => {
+  console.log ('server started on 3000');
+});
