@@ -11,3 +11,5 @@ todo-tan (DB)
 username
 password
 mongod —dbpath <data folder> —logpath <log folder> —fork
+
+https://www.youtube.com/watch?v=5e1NEdfs4is
