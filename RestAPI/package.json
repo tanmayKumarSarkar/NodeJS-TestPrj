@@ -1,0 +1,15 @@
+{
+  "name": "restapi",
+  "version": "1.0.0",
+  "description": "REST API demo",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "me",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3",
+    "joi": "^13.1.2"
+  }
+}
