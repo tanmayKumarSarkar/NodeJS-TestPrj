@@ -1,0 +1,27 @@
+<% include ./partials/header %>
+<h1>Welcome to my awesome website on the planet</h1>
+<h1></h1>
+<p>
+  you won't find a better website!!
+</p>
+<h2>Add Customers</h2>
+<form method="post" action="/users/add">
+  <label>First Name</label></br>
+  <input type="text" name="f_name"></br>
+  <label>Last Name</label></br>
+  <input type="text" name="l_name"></br>
+  <label>Email</label></br>
+  <input type="text" name="email"></br>
+  <input type="submit" value="submit">
+</form>
+<%= (typeof error != "undefined" ? "" : error=[]) %>
+<% error.forEach((err)=>{ %>
+  <%=err.message%></br>
+<%});%>
+<h2>Customers</h2>
+<ul>
+  <% customers.forEach((cust)=>{ %>
+    <li><%=cust.f_name%> <%=cust.l_name%> :=> <%=cust.email%> - <a href="#" class="deleteUser" data-id="<%=cust.id%>">delete</a></li>
+  <%});%>
+</ul>
+<% include partials/footer %>
