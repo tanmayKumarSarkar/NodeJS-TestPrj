@@ -1,15 +1,26 @@
 var moviesJSON = require('../movies.json');
 
+var movies = moviesJSON.movies;
+
 exports.home = (req, res)=>{
-  var movies = moviesJSON.movies;
+  
   res.render('home', {movies:movies});
 };
 
 exports.movie_single = (req, res)=>{
   var episode_number = req.params.episode_number;
-  res.send(`Page : ${episode_number}`);
+  var movies = moviesJSON.movies;
+
+  var movie = movies.find(item => item.episode_number === episode_number);
+  console.log(movie);
+  if(typeof movie != 'undefined'){
+  	res.render('movie_single', {movies:movies, movie:movie});
+  }else{
+  	res.render('notFound', {movies:movies});
+  }
+  
 };
 
 exports.notFound = (req, res)=>{
-  res.send('Oops! Page Not Found! Please enter the correct URL!')
+  res.render('notFound', {movies:movies});
 };

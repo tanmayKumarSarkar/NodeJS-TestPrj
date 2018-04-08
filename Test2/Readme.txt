@@ -7,6 +7,9 @@ tanmay.kr.sarkar@live.com
 tanmaykumar1993
 Mon@9647160687
 
+https://dashboard.heroku.com/apps
+Hero@9647160687
+
 todo-tan (DB)
 username
 password

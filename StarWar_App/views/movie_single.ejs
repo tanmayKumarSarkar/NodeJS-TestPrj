@@ -1,0 +1,35 @@
+<%include partials/header%>
+
+
+<div id="hero-image-single" style="background-image: url('/images/<%=movie.hero_image%>')">
+  <h1 id="hero-title"><%= movie.title%></h1>
+</div>
+
+<div class="content-padding clearfix">
+
+  <div class="poster-wrapper">
+    <img src="/images/<%=movie.poster%>" class="img-responsive"></img>
+  </div>
+
+  <div class="description-wrapper">
+    <div class="description">
+      <h2 class="movie-header">Description</h2>
+      <p><%=movie.description%></p>
+    </div>
+
+    <div class="main-characters">
+      <h2 class="movie-header">Main Characters</h2>
+      <ul>
+        <% movie.main_characters.forEach((movie_mc)=>{%>
+          <li><%=movie_mc%></li>
+        <%});%>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+
+
+
+<%include partials/footer%>
