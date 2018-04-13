@@ -1,0 +1,67 @@
+<!--The content below is only a placeholder and can be replaced.-->
+
+<div class="main">
+  <h1>Item's List</h1>
+  <div class="addItem">
+    <input [(ngModel)] = "newItem" placeholder="Add Item" class="addText">
+    <button (click) = "pushItem()">Add</button>
+  </div>
+  <ul>
+    <li *ngFor = "let i of items; let indx = index">
+      {{i}}<span (click) = "removeItem(indx)">x</span></li>
+  </ul>
+</div>
+
+<!-- Pipe -->
+<div class="pipe">
+  {{name}} // {{name | lowercase}} // {{name | uppercase}} <br>
+  {{day}} // {{day | date :'shortDate'}} // {{day | date :'fullDate'}} <br>
+  {{day | date :'fullDate' | uppercase}} <br>
+  {{arr | sort: 'ascending'}} //<!-- {{arr | sort: 'descending'}}--> <br>
+  <!--{{items | sort: 'ascending'}} // -->{{items | sort: 'descending'}} <br>
+</div>
+
+<!-- //Template Driven forms -->
+<form class="container" #userForm = "ngForm" (ngSubmit) = "onSubmit(userForm.value)">
+  <input type="text" name="firstname" placeholder="First Name" ngModel><br>
+  <input type="text" name="lastname" placeholder="Last Name" ngModel><br>
+  <select class="" name="languages" ngModel>
+    <option value="java">Java</option>
+    <option value="c++">C++</option>
+    <option value="python">Python</option>
+  </select> <br><br>
+  <input type="submit" value="Submit">
+</form>
+
+
+
+
+
+<!-- Data binding
+<div style="text-align:center">
+  <h1>
+    Welcome to {{ title }}!
+  </h1>
+</div>
+
+{{obj.name}}
+
+<ul>
+  <li *ngFor = "let i of arr">{{i}}</li>
+</ul>
+<p *ngIf = "isTrue; else elsTemplate">Hello {{isTrue}}</p>
+<p *ngIf = "title == 'app' && isTrue">Title is : <{{title}}></p>
+
+<p *ngIf = "str =='tan'; then ifTemplate else elsTemplate">Hello</p>
+<ng-template #ifTemplate>This is the if statement template</ng-template>
+<ng-template #elsTemplate>This is the else statement template</ng-template>
+Data binding -->
+
+
+<!-- router
+<a routerLink="/member">Member</a>
+<a routerLink="/product">Product</a>
+<br>
+
+<router-outlet></router-outlet>
+router -->
