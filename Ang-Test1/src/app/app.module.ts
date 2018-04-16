@@ -10,6 +10,8 @@ import { MyDataService } from './my-data.service';
 import { ProductComponent } from './product/product.component';
 import { MembersComponent } from './members/members.component';
 import { SortPipe } from './app.pipe';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BlueColorDirective } from './blue-color.directive';
 
 
 @NgModule({
@@ -17,13 +19,15 @@ import { SortPipe } from './app.pipe';
     SortPipe,
     AppComponent,
     ProductComponent,
-    MembersComponent
+    MembersComponent,
+    BlueColorDirective
   ],
   imports: [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
+    BrowserAnimationsModule,
     RouterModule.forRoot([
       {
         path : 'member',
