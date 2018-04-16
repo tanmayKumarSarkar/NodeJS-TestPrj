@@ -19,7 +19,7 @@
   {{day | date :'fullDate' | uppercase}} <br>
   {{arr | sort: 'ascending'}} //<!-- {{arr | sort: 'descending'}}--> <br>
   <!--{{items | sort: 'ascending'}} // -->{{items | sort: 'descending'}} <br>
-</div>
+</div><br>
 
 <!-- //Template Driven forms -->
 <form class="container" #userForm = "ngForm" (ngSubmit) = "onSubmit(userForm.value)">
@@ -29,10 +29,37 @@
     <option value="java">Java</option>
     <option value="c++">C++</option>
     <option value="python">Python</option>
-  </select> <br><br>
-  <input type="submit" value="Submit">
+  </select> <br>
+  <input type="submit" value="Submit"><br><br>
 </form>
 
+<!-- //Model Driven forms -->
+<form class="container" [formGroup] = "form" (ngSubmit) = "onSubmit(form.value)">
+  <input type="text" name="firstname" placeholder="First Name" formControlName = "firstname"><br>
+  <input type="text" name="lastname" placeholder="Last Name" formControlName = "lastname"><br>
+  <select class="" name="languages" formControlName = "languages">
+    <option value="java">Java</option>
+    <option value="c++">C++</option>
+    <option value="python">Python</option>
+  </select> <br>
+  <input type="submit" [disabled]="!form.valid" value="Submit">
+</form>
+
+<!-- //Converter Form App -->
+<form class="container" [formGroup] = "formCon">
+  <h1>Base Converter</h1>
+  <input type="text" name="decimal" (ngModelChange)="decimalChanged(oldValue, newValue = $event)" placeholder="decimal" formControlName="decimal" 
+    oninput="this.value = this.value.replace(/[^0-9]/g, '');" ><br>
+  <input type="text" name="binary" (ngModelChange)="binaryChanged(newValue = $event)" placeholder="binary" formControlName="binary" 
+    oninput="this.value = this.value.replace(/[^0-1]/g, '');" ><br>
+  <input type="text" name="octal" (ngModelChange)="octalChanged(newValue = $event)" placeholder="octal" formControlName="octal"
+    oninput="this.value = this.value.replace(/[^0-7]/g, '');" ><br>
+  <input type="text" name="hexa" (ngModelChange)="hexalChanged(newValue = $event)" placeholder="hexa" formControlName="hexa"
+    oninput="this.value = this.value.replace(/[^0-1 a-f A-F]/g, '');" ><br>
+</form>
+
+<!-- // Services -->
+<app-product></app-product>
 
 
 

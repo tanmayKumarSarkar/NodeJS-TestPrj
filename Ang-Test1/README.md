@@ -37,5 +37,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 $ npm i -g @angular/cli
 $ ng new Ang_Test1
 $ ng g component my-comp
+$ ng g service myData
+
 
 https://www.youtube.com/watch?v=qOxkeYuK6c4&list=PLz5rnvLVJX5VQZdTz4MTE52aKto-MoPwB&index=9
