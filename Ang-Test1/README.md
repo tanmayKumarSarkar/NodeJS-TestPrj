@@ -41,3 +41,4 @@ $ ng g service myData
 
 
 https://www.youtube.com/watch?v=qOxkeYuK6c4&list=PLz5rnvLVJX5VQZdTz4MTE52aKto-MoPwB&index=9
+https://www.youtube.com/watch?v=K0uqpRoz5Mk&index=13&list=PLYxzS__5yYQmi8f94KAGx1ofwFIn-FLNt
