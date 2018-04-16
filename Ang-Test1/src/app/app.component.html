@@ -82,12 +82,17 @@
 <ul>
   <li *ngFor = "let i of arr">{{i}}</li>
 </ul>
+<ul>
+  <li *ngFor = "let itm of arr; let i = index">{{i}} - {{itm}}</li>
+</ul>
+//index -> first, even, odd //
 <p *ngIf = "isTrue; else elsTemplate">Hello {{isTrue}}</p>
 <p *ngIf = "title == 'app' && isTrue">Title is : <{{title}}></p>
 
 <p *ngIf = "str =='tan'; then ifTemplate else elsTemplate">Hello</p>
 <ng-template #ifTemplate>This is the if statement template</ng-template>
 <ng-template #elsTemplate>This is the else statement template</ng-template>
+<p *ngIf = "3 % 2; let randomVariable;">3 % 2 is : {{randomVariable}}</p>
 Data binding -->
 
 
