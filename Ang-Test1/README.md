@@ -44,3 +44,6 @@ $ json-server -p 3600 products.json (//go to the path of the file then run it)
 
 https://www.youtube.com/watch?v=qOxkeYuK6c4&list=PLz5rnvLVJX5VQZdTz4MTE52aKto-MoPwB&index=9
 https://www.youtube.com/watch?v=K0uqpRoz5Mk&index=13&list=PLYxzS__5yYQmi8f94KAGx1ofwFIn-FLNt
+//
+https://www.youtube.com/watch?v=2AiQP_k4Ld8&list=PLYxzS__5yYQmi8f94KAGx1ofwFIn-FLNt&index=15
+https://www.youtube.com/watch?v=MN2WkxPnGTo
