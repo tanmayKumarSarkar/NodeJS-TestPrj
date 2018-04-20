@@ -12,6 +12,8 @@ import { MembersComponent } from './members/members.component';
 import { SortPipe } from './app.pipe';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BlueColorDirective } from './blue-color.directive';
+import { HomeComponent } from './home/home.component';
+import { UpdateProductComponent } from './update-product/update-product.component';
 
 
 @NgModule({
@@ -20,7 +22,9 @@ import { BlueColorDirective } from './blue-color.directive';
     AppComponent,
     ProductComponent,
     MembersComponent,
-    BlueColorDirective
+    BlueColorDirective,
+    HomeComponent,
+    UpdateProductComponent
   ],
   imports: [
     BrowserModule,
@@ -29,6 +33,10 @@ import { BlueColorDirective } from './blue-color.directive';
     HttpModule,
     BrowserAnimationsModule,
     RouterModule.forRoot([
+      /*{
+        path : '',
+        component : HomeComponent
+      },*/
       {
         path : 'member',
         component : MembersComponent
@@ -36,6 +44,10 @@ import { BlueColorDirective } from './blue-color.directive';
       {
         path : 'product',
         component : ProductComponent
+      },
+      {
+        path : 'updateProduct/:id',
+        component : UpdateProductComponent
       }
   ])
   ],

@@ -1,3 +1,26 @@
-<p>
-  members works!
-</p>
+<div class="" *ngIf = "!name; else formInfo">
+  <form [formGroup] = "rForm" (ngSubmit) = "addPost(rForm.value)">
+    <div class="form-cotainer">
+      <div class="row columns">
+        <h1>My Reactive Form</h1>
+        <label>Name <input type="text" formControlName="name"> </label>
+        <div class="alert" *ngIf="!rForm.controls['name'].valid && rForm.controls['name'].touched">{{titleAlert}}</div>
+        <label>Description <textarea formControlName="desription"></textarea> </label>
+        <div class="alert" *ngIf="!rForm.controls['desription'].valid && rForm.controls['desription'].touched">You must use a desription that's between 30 to 500 characters</div>
+        <label for="validate">Minimum 3 Characters</label>
+        <input type="checkbox" name="validate" formControlName="validate" value="1"> On
+        <input type="submit" class="button expanded" value="Submit Form" [disabled]="!rForm.valid">
+      </div>
+    </div>
+  </form>
+</div>
+
+<ng-template #formInfo>
+  <div class="form-container">
+    <div class="row columns">
+      <h1>{{name}}</h1>
+
+      <p>{{desription}}</p>
+    </div>
+  </div>
+</ng-template>

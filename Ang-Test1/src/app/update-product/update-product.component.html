@@ -1,0 +1,13 @@
+<a routerLink="">HOME</a>
+
+<h3 *ngIf="!exists">Product Doesn't Exists</h3>
+
+<h2>Update Product</h2>
+<form id="formNewProcuct" name="formNewProcuct" #productData="ngForm" (ngSubmit)= "updateProduct(productData.value)">
+<label>Name  : <input type="text" name="name" id="name" placeholder="Name" [(ngModel)]="data.name" ngModel> </label>
+<label>Color : <input type="text" name="color" id="color" placeholder="Color" [(ngModel)]="data.color" ngModel> </label>
+<input type="submit" name="" value="Update Product">
+</form>
+<br>
+
+<h3 *ngIf="isAdded">{{confirmationString}}</h3>

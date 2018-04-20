@@ -1,6 +1,6 @@
 <!--The content below is only a placeholder and can be replaced.-->
 
-<div class="main">
+<!--div class="main">
   <h1>Item's List</h1>
   <div class="addItem">
     <input [(ngModel)] = "newItem" placeholder="Add Item" class="addText">
@@ -10,19 +10,19 @@
     <li *ngFor = "let i of items; let indx = index">
       {{i}}<span (click) = "removeItem(indx)">x</span></li>
   </ul>
-</div>
+</div-->
 
 <!-- Pipe -->
-<div class="pipe">
+<!--div class="pipe">
   {{name}} // {{name | lowercase}} // {{name | uppercase}} <br>
   {{day}} // {{day | date :'shortDate'}} // {{day | date :'fullDate'}} <br>
   {{day | date :'fullDate' | uppercase}} <br>
-  {{arr | sort: 'ascending'}} //<!-- {{arr | sort: 'descending'}}--> <br>
-  <!--{{items | sort: 'ascending'}} // -->{{items | sort: 'descending'}} <br>
-</div><br>
+  {{arr | sort: 'ascending'}} //--><!-- {{arr | sort: 'descending'}}--> <!--br-->
+  <!--{{items | sort: 'ascending'}} // --><!-- //{{items | sort: 'descending'}} <br>
+</div><br-->
 
 <!-- //Template Driven forms -->
-<form class="container" #userForm = "ngForm" (ngSubmit) = "onSubmit(userForm.value)">
+<!--form class="container" #userForm = "ngForm" (ngSubmit) = "onSubmit(userForm.value)">
   <input type="text" name="firstname" placeholder="First Name" ngModel><br>
   <input type="text" name="lastname" placeholder="Last Name" ngModel><br>
   <select class="" name="languages" ngModel>
@@ -31,10 +31,10 @@
     <option value="python">Python</option>
   </select> <br>
   <input type="submit" value="Submit"><br><br>
-</form>
+</form-->
 
 <!-- //Model Driven forms -->
-<form class="container" [formGroup] = "form" (ngSubmit) = "onSubmit(form.value)">
+<!--form class="container" [formGroup] = "form" (ngSubmit) = "onSubmit(form.value)">
   <input type="text" name="firstname" placeholder="First Name" formControlName = "firstname"><br>
   <input type="text" name="lastname" placeholder="Last Name" formControlName = "lastname"><br>
   <select class="" name="languages" formControlName = "languages">
@@ -43,31 +43,33 @@
     <option value="python">Python</option>
   </select> <br>
   <input type="submit" [disabled]="!form.valid" value="Submit">
-</form>
+</form-->
 
 <!-- //Converter Form App -->
-<form class="container" [formGroup] = "formCon">
+<!--form class="container" [formGroup] = "formCon">
   <h1>Base Converter</h1>
-  <input type="text" name="decimal" (ngModelChange)="decimalChanged(oldValue, newValue = $event)" placeholder="decimal" formControlName="decimal" 
+  <input type="text" name="decimal" (ngModelChange)="decimalChanged(oldValue, newValue = $event)" placeholder="decimal" formControlName="decimal"
     oninput="this.value = this.value.replace(/[^0-9]/g, '');" ><br>
-  <input type="text" name="binary" (ngModelChange)="binaryChanged(newValue = $event)" placeholder="binary" formControlName="binary" 
+  <input type="text" name="binary" (ngModelChange)="binaryChanged(newValue = $event)" placeholder="binary" formControlName="binary"
     oninput="this.value = this.value.replace(/[^0-1]/g, '');" ><br>
   <input type="text" name="octal" (ngModelChange)="octalChanged(newValue = $event)" placeholder="octal" formControlName="octal"
     oninput="this.value = this.value.replace(/[^0-7]/g, '');" ><br>
   <input type="text" name="hexa" (ngModelChange)="hexalChanged(newValue = $event)" placeholder="hexa" formControlName="hexa"
     oninput="this.value = this.value.replace(/[^0-1 a-f A-F]/g, '');" ><br>
-</form>
+</form-->
 
 <!-- // Services -->
-<app-product></app-product>
+<!--app-product></app-product-->
 
 
 <!-- //Animations -->
-<div blueColor>
+<!--div blueColor>
   <button (click)="animate()">Click Me</button>
   <p [@my-animation]= "state">Look Me</p>
-</div>
+</div-->
 
+
+<!--app-members></app-members-->
 
 
 <!-- Data binding
@@ -100,6 +102,21 @@ Data binding -->
 <a routerLink="/member">Member</a>
 <a routerLink="/product">Product</a>
 <br>
+-->
+<div class="">
+  <router-outlet></router-outlet>
+</div>
 
-<router-outlet></router-outlet>
-router -->
+<!--router -->
+
+<!-- One Way Data binding -->
+<!--input type="text" [value] = "result" (keydown) = "myFunc($event)" />
+<input type="text" bind-value = "result" on-keydown = "myFunc($event)" />
+<input type="text" value = "{{result}}" (keydown) = "myFunc($event)" /-->
+<!-- One Way Data binding -->
+
+<!-- Two Way Data binding -->
+<!--  [] - available to view
+      () - input to script -->
+<input type="text" [(ngModel)] = "userame" /><br>{{userame}}
+<!-- Two Way Data binding -->

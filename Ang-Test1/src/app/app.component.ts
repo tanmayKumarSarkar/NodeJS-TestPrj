@@ -74,7 +74,7 @@ export class AppComponent {
     hexa : new FormControl("")
     });
     }
-  
+
     //Services
     //console.log(this.newService.success());
     //this.newService.obj.name ="TANMAY";
@@ -110,7 +110,7 @@ export class AppComponent {
         this.formCon.patchValue({decimal:""});
       }
       this.b = 0;
-    }    
+    }
   }
   octalChanged = function (newvalue) {
     this.o = this.o +1;
@@ -121,7 +121,7 @@ export class AppComponent {
         this.formCon.patchValue({decimal:""});
       }
       this.o = 0;
-    }    
+    }
   }
   hexalChanged = function (newvalue) {
     this.h = this.h +1;
@@ -132,7 +132,7 @@ export class AppComponent {
         this.formCon.patchValue({decimal:""});
       }
       this.h = 0;
-    }    
+    }
   }
 
 
@@ -165,6 +165,10 @@ animate(){
     hexa : new FormControl("")
   });
   } */
+
+//<!-- Two Way Data binding -->
+userame;
+
 
 
 

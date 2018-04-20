@@ -38,6 +38,8 @@ $ npm i -g @angular/cli
 $ ng new Ang_Test1
 $ ng g component my-comp
 $ ng g service myData
+$ npm i -g json-server
+$ json-server -p 3600 products.json (//go to the path of the file then run it)
 
 
 https://www.youtube.com/watch?v=qOxkeYuK6c4&list=PLz5rnvLVJX5VQZdTz4MTE52aKto-MoPwB&index=9
