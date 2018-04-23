@@ -6,19 +6,14 @@
       "color": "red"
     },
     {
+      "id": 2,
       "name": "shirt",
-      "color": "orange",
-      "id": 2
+      "color": "gray"
     },
     {
       "id": 3,
       "name": "pant",
       "color": "black"
-    },
-    {
-      "name": "shoe",
-      "color": "brown",
-      "id": 4
     }
   ]
 }

@@ -1,19 +1,19 @@
 {
-  "products" : [
+  "products": [
     {
-      "id" : 1,
-      "name" : "t-shirt",
-      "color" : "red"
+      "id": 1,
+      "name": "t-shirt",
+      "color": "red"
     },
     {
-      "id" : 2,
-      "name" : "shirt",
-      "color" : "gray"
+      "id": 2,
+      "name": "shirt",
+      "color": "gray"
     },
     {
-      "id" : 3,
-      "name" : "pant",
-      "color" : "black"
+      "id": 3,
+      "name": "pant",
+      "color": "black"
     }
   ]
 }

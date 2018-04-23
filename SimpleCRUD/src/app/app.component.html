@@ -1,0 +1,36 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div style="text-align:center">
+  <input type="text" (keyup)="onNameKeyUp($event)">
+  <button (click)="getProfile()">Get Profile</button><br>
+  <div *ngIf="isFound"><span>{{name}}'s age is {{age}}</span></div><br>
+
+  --------------------------------<br>
+
+    <input type="text" [(ngModel)]="pName">
+    <input type="number" [(ngModel)]="pAge">
+    <button (click) ="postProfile()">Post Profile</button><br>
+
+    --------------------------------<br>
+
+    <input type="text" [(ngModel)]="uName">
+    <input type="number" [(ngModel)]="uAge">
+    <button (click) ="updateProfile()">Update Profile</button><br>
+
+    <table border="1" cellpadding="5" cellspacing="10">
+      <th>ID</th>
+      <th>Name</th>
+      <th>Age</th>
+      <th></th>
+      <th></th>
+      <tr *ngFor="let profile of profiles">
+        <td>{{profile.id}}</td>
+        <td>{{profile.name}}</td>
+        <td>{{profile.age}}</td>
+        <td (click) = "editProfile(profile.id, profile.name, profile.age)" ><a>Edit</a></td>
+        <td (click) = "deleteProfile(profile.id)">X</td>
+      </tr>
+    </table>
+
+</div>
+
+

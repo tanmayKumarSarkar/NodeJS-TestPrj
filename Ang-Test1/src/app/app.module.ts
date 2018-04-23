@@ -33,10 +33,10 @@ import { UpdateProductComponent } from './update-product/update-product.componen
     HttpModule,
     BrowserAnimationsModule,
     RouterModule.forRoot([
-      /*{
+      {
         path : '',
         component : HomeComponent
-      },*/
+      },
       {
         path : 'member',
         component : MembersComponent
