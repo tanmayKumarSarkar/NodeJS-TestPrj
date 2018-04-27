@@ -14,6 +14,11 @@
       "id": 3,
       "name": "pant",
       "color": "black"
+    },
+    {
+      "name": "shoe",
+      "color": "black",
+      "id": 4
     }
   ]
 }

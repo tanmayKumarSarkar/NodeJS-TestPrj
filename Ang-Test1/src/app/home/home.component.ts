@@ -9,7 +9,9 @@ import 'rxjs/add/operator/toPromise'
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private http: Http) {}
+  constructor(private http: Http) {
+    this.serverStatus = Math.random() > 0.5 ? 'online' : 'offline';
+  }
   id : number;
   private headers = new Headers ({'Content-type' : 'application/json'});
   products = [];
@@ -34,6 +36,26 @@ export class HomeComponent implements OnInit {
         })
     }
   }
+
+  ////ngStyle
+  servers =[
+    {'servername': 'india', 'serverid' : '10'},
+    {'servername': 'us', 'serverid' : '12'},
+    {'servername': 'mex', 'serverid' : '50'},
+    {'servername': 'uk', 'serverid' : '40'}
+  ];
+  serverStatus: string = 'offline';
+
+  getServerStatus(){
+    //this.serverStatus = Math.random() > 0.5 ? 'online' : 'offline';
+    //return Math.random() > 0.5 ? 'online' : 'offline';
+    return this.serverStatus;
+  }
+  getColor() {
+    console.log(this.getServerStatus() === 'online' ? 'green' : 'red');
+    return this.getServerStatus() === 'online' ? 'green' : 'red';
+  }
+
 
 
 }

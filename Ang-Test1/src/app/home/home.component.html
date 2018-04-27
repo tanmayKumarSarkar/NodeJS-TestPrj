@@ -15,3 +15,8 @@
     <td [routerLink] = "['/updateProduct', product.id]"><a>UPDATE</a></td>
   </tr>
 </table>
+
+<!-- ngStyle -->
+<div class="" *ngFor="let s of servers">
+  <p [ngStyle]="{backgroundColor: getColor()}"> Server : {{s.servername}}, ID : {{s.serverid}}, Status : {{getServerStatus()}}</p>
+</div>
