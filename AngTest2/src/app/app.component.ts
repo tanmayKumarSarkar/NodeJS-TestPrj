@@ -7,4 +7,14 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   
+  
+
 }
+
+/*
+students: Array<any>;
+constructor(private dataService: DataService){
+	this.dataService.getStudents().subscribe(res=> this.students = res);
+}
+*/
+

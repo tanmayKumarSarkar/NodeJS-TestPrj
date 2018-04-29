@@ -18,5 +18,9 @@
 
 <!-- ngStyle -->
 <div class="" *ngFor="let s of servers">
-  <p [ngStyle]="{backgroundColor: getColor()}"> Server : {{s.servername}}, ID : {{s.serverid}}, Status : {{getServerStatus()}}</p>
+  <p 
+  [ngStyle]="{backgroundColor: getColor(s.serverc)}"
+  [ngClass]="{online: getServerStatus(s.serverc) === 'online'}"
+  > 
+Server : {{s.servername}}, ID : {{s.serverid}}, Status : {{getServerStatus(s.serverc)}}</p>
 </div>

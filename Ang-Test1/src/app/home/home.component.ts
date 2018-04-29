@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Http, Response, Headers } from '@angular/http';
 import 'rxjs/add/operator/toPromise'
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-home',
@@ -9,7 +10,7 @@ import 'rxjs/add/operator/toPromise'
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private http: Http) {
+  constructor(private http: Http, private cdr: ChangeDetectorRef) {
     this.serverStatus = Math.random() > 0.5 ? 'online' : 'offline';
   }
   id : number;
@@ -37,23 +38,34 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  ngAfterViewInit() {
+        setInterval(() => {
+          this.servers.forEach ((server)=>{
+            server.serverc = Math.random();
+        });
+        }, 2000);
+    }
+
   ////ngStyle
   servers =[
-    {'servername': 'india', 'serverid' : '10'},
-    {'servername': 'us', 'serverid' : '12'},
-    {'servername': 'mex', 'serverid' : '50'},
-    {'servername': 'uk', 'serverid' : '40'}
+    {'servername': 'india', 'serverid' : '10', 'serverc': Math.random()},
+    {'servername': 'us', 'serverid' : '12', 'serverc': Math.random()},
+    {'servername': 'mex', 'serverid' : '50', 'serverc': Math.random()},
+    {'servername': 'uk', 'serverid' : '40', 'serverc': Math.random()}
   ];
   serverStatus: string = 'offline';
 
-  getServerStatus(){
+  getServerStatus(s){
+    return s > 0.5 ? 'online' : 'offline';
+    //this.cdr.detectChanges();
     //this.serverStatus = Math.random() > 0.5 ? 'online' : 'offline';
+    //this.cdr.markForCheck();
     //return Math.random() > 0.5 ? 'online' : 'offline';
-    return this.serverStatus;
+    //return this.serverStatus;
   }
-  getColor() {
-    console.log(this.getServerStatus() === 'online' ? 'green' : 'red');
-    return this.getServerStatus() === 'online' ? 'green' : 'red';
+  getColor(s) {
+    //console.log(this.getServerStatus(s) === 'online' ? 'green' : 'red');
+    return this.getServerStatus(s) === 'online' ? 'green' : 'red';
   }
 
 
