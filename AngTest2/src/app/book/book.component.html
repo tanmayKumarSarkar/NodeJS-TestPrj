@@ -1,3 +1,25 @@
-<p>
-  book works!
-</p>
+<h3>Book List</h3>
+<div *ngFor="let book of books" class="">
+	<div class="row">
+		<div class="col-md-1">
+			<input type="checkbox" name="">
+		</div>
+		<div class="col-md-3">
+			{{book.name}}
+		</div>		
+		<div class="col-md-1">
+			{{book.genre}}
+		</div>	
+		<div class="col-md-2">
+			{{book.author}}
+		</div>	
+		<div class="col-md-2">
+			<button type="button" name="button" class="btn btn-primary">Edit</button>
+		</div>	
+		<div class="col-md-3">
+			<button type="button" name="button" class="btn btn-danger">Delete</button>
+			<br><br>
+		</div>	
+	</div>
+</div>
+

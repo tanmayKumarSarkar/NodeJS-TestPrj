@@ -9,20 +9,14 @@ import 'rxjs/add/operator/toPromise'
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private http: Http) { }
+  constructor() { }
 
   ngOnInit() {
-  	this.fetchData();
+  	
   }
 
-  books = [];
+  
 
-  fetchData(){
-    this.http.get("http://localhost:3000/api/books").subscribe(
-      (res: Response)=> {
-        this.books = res.json();
-      });
-  }
-
+  
 
 }
