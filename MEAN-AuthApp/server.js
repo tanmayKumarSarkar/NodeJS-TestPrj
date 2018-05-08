@@ -31,12 +31,12 @@ require('./config/passport')(passport);
 
 app.use('/users', users);
 
-app.get('/', (req, res)=>{
-	res.send('invalid endpoint')
-})
+// app.get('/', (req, res)=>{
+// 	res.send('invalid endpoint')
+// })
 app.get('*', (req, res)=>{
-	res.send('res')
-  //res.sendFile(path.join(__dirname, 'dist/index.html'));
+	//res.send('res')
+  res.sendFile(path.join(__dirname, 'dist/index.html'));
 })
 
 app.listen(port, ()=>{
