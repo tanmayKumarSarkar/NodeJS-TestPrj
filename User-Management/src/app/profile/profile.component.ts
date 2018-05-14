@@ -15,11 +15,10 @@ export class ProfileComponent implements OnInit {
 
   constructor(private vs : ValidateService, private fm: FlashMessagesService, private as: AuthService, private rt: Router) { }
 
-  ngOnInit() {
-    console.log("in");    
+  ngOnInit() {   
     this.as.getProfile().subscribe(profile =>{
       this.user = profile.user;
-      console.log("profile : ",profile);
+      //this.as.user = this.user;
     },err=>{
       console.log(err);
       return false;

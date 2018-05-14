@@ -33,8 +33,8 @@ export class AuthService {
   getProfile(){
     let headers = new Headers();
     headers.append('Content-type', 'application/json');
-    headers.append('authorization', this.getToken());
-    return this.http.get(`${this.api}/api/profile`, {headers: headers})
+    headers.append('Authorization', this.getToken());
+    return this.http.post(`${this.api}/api/profile`,{}, {headers: headers})
       .map(res=> res.json());
   }
 
