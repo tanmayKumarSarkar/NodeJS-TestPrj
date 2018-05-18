@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-md navbar-dark  bg-dark">
-  <a class="navbar-brand" href="/">User Management</a>
+  <a class="navbar-brand" routerLink="/">User Management</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -16,7 +16,8 @@
           <li *ngIf="this.as.loggedIn()"  class="nav-item"><a class="nav-link" routerLink="/profile" routerLinkActive="active">Profile</a></li>
           <li *ngIf="this.as.loggedIn()" class="nav-item">
               <a class="nav-link" href="#" (click)="onLogoutClick()">LogOut</a>
-          </li> 
+          </li>
+          <li *ngIf="this.as.loggedIn()"  class="nav-item"><a class="nav-link active">Welcome {{this.as.getLuser().name | uppercase  }}</a></li> 
     </ul>
     <form class="form-inline my-2 my-lg-0">
       <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">

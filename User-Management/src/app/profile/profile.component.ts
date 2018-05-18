@@ -11,18 +11,47 @@ import { Router } from '@angular/router';
 })
 export class ProfileComponent implements OnInit {
 
-  user: Object;
+  user: { id: String, name: String,username: String,email: String};;
+  isEditable: boolean;
+  userS: { name: String,username: String,email: String};
 
   constructor(private vs : ValidateService, private fm: FlashMessagesService, private as: AuthService, private rt: Router) { }
 
-  ngOnInit() {   
-    this.as.getProfile().subscribe(profile =>{
-      this.user = profile.user;
-      //this.as.user = this.user;
+  ngOnInit() {
+    this.getProfile();
+    this.isEditable = false;
+  }
+
+  editProfile(){
+    this.userS = {name: this.user.name, username:this.user.username, email:this.user.email};
+    this.isEditable = true;
+  }
+
+  updateProfile(id){
+    this.as.updateProfile(id, this.userS).subscribe(profile =>{
+      this.user = profile;
+      
+      this.as.updateUser(this.user);
+      //console.log('As: ', this.as.user, 'profile comp : ',this.user);
+      this.isEditable = false;    
+      this.getProfile();
+
     },err=>{
       console.log(err);
       return false;
-    })
+    });
+    //this.as.user = this.user;
+    
   }
 
+  getProfile(){
+    this.as.getProfile().subscribe(profile =>{
+      this.user = profile.user;
+      this.as.user = this.user;
+    },err=>{
+      console.log(err);
+      return false;
+    });
+  }
+  
 }

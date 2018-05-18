@@ -52,3 +52,8 @@ module.exports.comparePassword = (candidatePassword, hash, callback)=>{
     });
 }
 
+// module.exports.findByIdAndUpdate = (id, value, options, (err,user)=>{
+//     if(err) throw err;
+//     res.json(user);
+//   });
+

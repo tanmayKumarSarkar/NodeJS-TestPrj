@@ -37,12 +37,12 @@ router.post('/login', (req, res)=>{
         res.json({success: false, msg: 'Insert all the valid fileds'});
     }else {
         User.getUserByUserName(user.username, (err, userX)=>{
-            if(err) throw err;
+            if(err) res.status(403).json({success: false, msg: err.codeName});
             if(!userX) {
                 return res.json({success: false, msg: 'User Not Found'});
             }
             User.comparePassword(user.password, userX.password, (err, isMatch)=>{
-                if(err) throw err;
+                if(err) res.status(403).json({success: false, msg: err.codeName});
                 if(isMatch){
                     const token = jwt.sign({userX}, key, {expiresIn: 604800}, (err, token)=>{
                         res.json({
@@ -67,7 +67,49 @@ router.post('/login', (req, res)=>{
 router.post('/profile', verifyToken, (req, res)=>{
     jwt.verify(req.token, key, (err, authData)=>{
         if(err) res.status(403).json({success: false, msg: "Token Invalid"});
-        else res.json({success: true, msg: "Token Verified", user: authData.userX});
+        else{
+            User.findById(authData.userX._id, (err, user)=>{
+                if(err) res.status(403).json({success: false, msg: err.codeName});
+                res.json({success: true, msg: "Token Verified", user: user});
+              });
+        } 
+        /*res.json({success: true, msg: "Token Verified", user: authData.userX});*/    
+    });
+});
+
+router.put('/profile/:id', (req, res)=>{
+    User.findByIdAndUpdate(req.params.id, {$set: req.body}, {new: true}, (err,user)=>{
+      if(err) {
+          res.status(403).json({success: false, msg: err.codeName=='DuplicateKey'? 'UserId Not Available Please Try Another One': err.codeName});
+        }
+      res.json(user);
+    });
+    // .findBfindByIdAndUpdateyId(req.params.id, {$set: req.body}, {})
+    // .exec((err, user)=>{
+    //     if(err) throw err;
+    //     res.json(user);
+    // });
+  });
+
+router.get('/users', (req, res)=>{
+    User.find({})
+      .exec((err, users)=>{
+        if(err) res.status(403).json({success: false, msg: err.codeName});
+        res.json(users);
+      });
+  });
+  
+router.get('/users/:id', (req, res)=>{
+    User.findById(req.params.id, (err, user)=>{
+        if(err) res.status(403).json({success: false, msg: err.codeName});
+        res.json(user);
+      });
+  });
+
+router.delete('/profile/:id', (req, res)=>{
+    User.findByIdAndRemove(req.params.id, (err,user)=>{
+      if(err) res.status(403).json({success: false, msg: err.codeName});
+      res.json(user);
     });
 });
 

@@ -7,10 +7,12 @@ import { tokenNotExpired } from 'angular2-jwt';
 export class AuthService {
 
   authToken : any;
-  user: any;
+  user: { id:String, name: String,username: String,email: String}
   api: String = 'http://localhost:3000' || '';
 
-  constructor(private http: Http) { }
+  constructor(private http: Http) {
+    this.user= {id:'', name: '',username: '',email: ''};
+   }
 
   registerUser(user){
     let headers = new Headers();
@@ -38,6 +40,12 @@ export class AuthService {
       .map(res=> res.json());
   }
 
+  updateProfile(id, user){
+    let headers = new Headers({'Content-Type': 'application/json'});
+    return this.http.put(`${this.api}/api/profile/${id}`,user, {headers: headers})
+      .map(res=> res.json());
+  }
+
   storeUserData(token, user){
     localStorage.setItem('id_token', token);
     localStorage.setItem('user', JSON.stringify(user));
@@ -47,6 +55,17 @@ export class AuthService {
 
   getToken(){
     return this.authToken = localStorage.getItem('id_token');
+  }
+
+  getLuser(){
+    return this.user = JSON.parse(localStorage.getItem('user'));
+  }
+
+  updateUser(user){
+    this.user = user;
+    localStorage.removeItem('user');
+    localStorage.setItem('user', JSON.stringify(user));
+    this.getLuser();
   }
 
   logout(){
