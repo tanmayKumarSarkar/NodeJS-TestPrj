@@ -20,7 +20,7 @@ const UserSchema = mongoose.Schema({
     }
 });
 
-const User = module.exports = mongoose.model('User', UserSchema);
+const User = module.exports = mongoose.model('Buser', UserSchema);
 
 module.exports.getUserById = (id, callback)=>{
     User.findById(id, callback);
