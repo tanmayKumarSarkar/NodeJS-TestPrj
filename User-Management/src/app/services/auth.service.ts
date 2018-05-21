@@ -32,6 +32,21 @@ export class AuthService {
     return tokenNotExpired('id_token');
   }
 
+  confirmRegistration(token){
+    return this.http.get(`${this.api}/api/confirmation/${token}`)
+      .map(res=> res.json());
+  }
+
+  resendRegistration(email){
+    return this.http.get(`${this.api}/api/resendconfirmation/${email}`)
+      .map(res=> res.json());
+  }
+
+  checkActivatedUser(username){
+    return this.http.get(`${this.api}/api/checkactivateduser/${username}`)
+      .map(res=> res.json());
+  }
+
   getProfile(){
     let headers = new Headers();
     headers.append('Content-type', 'application/json');

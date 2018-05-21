@@ -4,25 +4,48 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
+const nodemailer = require('nodemailer');
 
 const key = "PrivateKey";
+const hurl = 'http://localhost:4200' || 'http://localhost:3000/api' ||'';
+
+const transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    // auth:{
+    //     user: 'tanmay.devacc@gmail.com',
+    //     pass: '9647160687'
+    // },
+    auth:{
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_PASS
+    }
+});
 
 router.post('/users', (req, res)=>{
 	let user = new User({
 		name: req.body.name,
 		username: req.body.username,
         password: req.body.password,
-        email: req.body.email
+        email: req.body.email,
+        temptoken: jwt.sign({username:req.body.username, email: req.body.email}, key, {expiresIn: 604800})
     });
+    const eurl = `${hurl}/confirmation/${user.temptoken}`;
     if(validateRegister(user)){
-        //console.log(user);
         user.save((err, callback)=>{
             if (err) {
                 if(err.message.includes('duplicate')) 
                     res.json({success: false, msg: 'User already registered, please try new one'});
                 else res.json({success: false, msg: 'Failed to register user, please try again'});    
             }
-            else res.json({success: true, msg: 'User Rgistered Successfully'});
+            else{
+                transporter.sendMail({
+                    to: user.email,
+                    subject: 'Confirm Your E-mail',
+                    text: `Please click here to confirm your email: <a href="${eurl}" target="_blank"> ${eurl} </a>`,
+                    html: `Please click here to confirm your email: <a href="${eurl}" target="_blank"> ${eurl} </a>`
+                });
+                res.json({success: true, msg: 'Rgistered Successfully, please check your email for activation link'});
+            } 
         });  
     }else res.json({success: false, msg: 'Insert all the valid fileds'});
 });
@@ -32,7 +55,6 @@ router.post('/login', (req, res)=>{
 		username: req.body.username,
         password: req.body.password
     });
-    console.log(user);
      if(user.username == undefined || user.username =="" || user.password == undefined || user.password == ""){
         res.json({success: false, msg: 'Insert all the valid fileds'});
     }else {
@@ -63,6 +85,57 @@ router.post('/login', (req, res)=>{
         });
     } 
 });     // End of the login post
+
+router.get('/resendconfirmation/:email', (req, res)=>{
+    User.findOne({email: req.params.email}, (err, user)=>{
+        if(err) res.json({success: false, msg: err.codeName});
+        else if(user == null){
+            res.json({success: false, msg: 'Email not registered, please register or provide correct Email'});
+        }else{
+            const eurl = `${hurl}/confirmation/${user.temptoken}`;
+            transporter.sendMail({
+                to: user.email,
+                subject: 'Confirm Your E-mail',
+                text: `Please click here to confirm your email: <a href="${eurl}" target="_blank"> ${eurl} </a>`,
+                html: `Please click here to confirm your email: <a href="${eurl}" target="_blank"> ${eurl} </a>`
+            });  
+            res.json({success: true, msg: 'Confirmation Link Sent, please check your email for activation link'});
+        } 
+      });
+  });
+
+router.get('/confirmation/:token', (req, res)=>{
+    jwt.verify(req.params.token, key, (err, data)=>{
+        if(err) {
+            res.json({success: false, msg: 'Registration Token Does Not Exists'});
+          }else{
+            User.findOneAndUpdate({username: data.username}, {$set:{active:true}}, {new: true}, (err, user)=>{
+                if(user == null) {
+                    res.json({success: false, msg: 'User Not Registered'});
+                }else if(err) {
+                    res.json({success: false, msg: 'Registration Token Not Verified'});
+                }else{
+                    res.json({success: true, msg: "Registration Token Verified, Please Log In", user: user});
+                }
+            });
+          }
+    });    
+});
+
+router.get('/checkactivateduser/:username', (req, res)=>{
+    User.findOne({username: req.params.username}, (err, user)=>{
+        if(err) {
+            res.json({success: false, msg: 'UserName Does Not Exists'});
+          }else if(user == null){
+            res.json({success: false, msg: 'UserName Does Not Exists'});
+          }
+          else if(!user.active){
+            res.json({success: false, msg: 'Account Not Activated, Please Check Your Email To Active Your Account'});
+          }else{
+            res.json({success: true, msg: "Active Account, Please Log In", user: user});
+          }
+    });    
+});
 
 router.post('/profile', verifyToken, (req, res)=>{
     jwt.verify(req.token, key, (err, authData)=>{

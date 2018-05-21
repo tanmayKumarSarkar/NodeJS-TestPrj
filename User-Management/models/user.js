@@ -24,13 +24,22 @@ const UserSchema = new Schema({
         required: true,
         lowercase: true,
         unique: true
+    },
+    active : {
+        type: Boolean,
+        required: true,
+        default: false
+    },
+    temptoken : {
+        type: String,
+        required: true
     }
 });
 
 UserSchema.pre('save', function(next){
     let user = this;
     bcrypt.genSalt(10, function(err, salt) {
-        bcrypt.hash(key, salt, function(err, hash) {
+        bcrypt.hash(user.password, salt, function(err, hash) {
             if(err) return next(err);
             user.password = hash;
             next();
@@ -47,7 +56,7 @@ module.exports.getUserByUserName = (username, callback)=>{
 
 module.exports.comparePassword = (candidatePassword, hash, callback)=>{
     bcrypt.compare(candidatePassword, hash, (err, isMatch)=>{
-        if(err) throw err;
+        if(err) console.log(err);
         callback(null, isMatch);
     });
 }

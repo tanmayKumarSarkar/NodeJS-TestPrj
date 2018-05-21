@@ -48,11 +48,11 @@
                             [disabled]="(userS.username=='' || userS.name=='' || userS.email=='')">Update</button>
                         </td>
                         <td *ngIf="!isEditable">{{user.username}}</td>
-                        <td *ngIf="isEditable"><input type="text" class="form-control" id="username" required [(ngModel)]="userS.username" name="username"></td>
+                        <td *ngIf="isEditable"><input type="text" class="form-control" id="username" required [readonly]="true" [(ngModel)]="userS.username" name="username"></td>
                         <td *ngIf="!isEditable">{{user.name}}</td>
                         <td *ngIf="isEditable"><input type="text" class="form-control" id="name" required [(ngModel)]="userS.name" name="name"></td>
                         <td *ngIf="!isEditable">{{user.email}}</td>
-                        <td *ngIf="isEditable"><input type="text" class="form-control" id="email" required [(ngModel)]="userS.email" name="email"></td>
+                        <td *ngIf="isEditable"><input type="text" class="form-control" id="email" [readonly]="true" required [(ngModel)]="userS.email" name="email"></td>
                       </tr>
                     </tbody>
             </table>

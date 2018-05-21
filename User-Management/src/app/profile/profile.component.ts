@@ -37,7 +37,7 @@ export class ProfileComponent implements OnInit {
       this.getProfile();
 
     },err=>{
-      console.log(err);
+      //console.log(err);
       return false;
     });
     //this.as.user = this.user;
@@ -49,7 +49,7 @@ export class ProfileComponent implements OnInit {
       this.user = profile.user;
       this.as.user = this.user;
     },err=>{
-      console.log(err);
+      //console.log(err);
       return false;
     });
   }

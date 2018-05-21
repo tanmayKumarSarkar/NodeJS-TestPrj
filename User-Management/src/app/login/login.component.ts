@@ -27,11 +27,20 @@ export class LoginComponent implements OnInit {
     if(user.username == undefined || user.username =="" || user.password == undefined || user.password == ""){
       this.fm.show("Please Fill All The Fields", {cssClass:'alert-danger', timeout:3000}); 
     }else{
-      this.as.authUser(user).subscribe(data=>{
+      this.as.checkActivatedUser(user.username).subscribe(data=>{      
         if(data.success){
-          this.fm.show("Logged In", {cssClass:'alert-success', timeout:3000});
-          this.as.storeUserData(data.token.split(' ')[1], data.user);
-          this.rt.navigate(['/profile']);
+          
+          this.as.authUser(user).subscribe(data=>{
+            if(data.success){
+              this.fm.show("Logged In", {cssClass:'alert-success', timeout:3000});
+              this.as.storeUserData(data.token.split(' ')[1], data.user);
+              this.rt.navigate(['/profile']);
+            }else{
+              this.fm.show(data.msg, {cssClass:'alert-danger', timeout:3000}); 
+              this.rt.navigate(['/login']);
+            }
+          });
+
         }else{
           this.fm.show(data.msg, {cssClass:'alert-danger', timeout:3000}); 
           this.rt.navigate(['/login']);

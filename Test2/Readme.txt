@@ -1,4 +1,4 @@
-hi there!!tanmay
+﻿hi there!!tanmay
 Node JS Tutorial for Beginners #31 - Making a To-do App (part 1)
 MongoDb
 https://mlab.com
@@ -82,3 +82,6 @@ var postSchema = new Schema({
 ///////////////////////////////////////////////////////////////////////////
 
 db.students.find({classes:{$in:['history,'geography']}})              // classes: ['history', 'geography', 'physics']
+
+tanmay.devacc@gmail.com9..87
+GMAIL_USER=tanmay.devacc@gmail.com GMAIL_PASS=9..7 nodemon start

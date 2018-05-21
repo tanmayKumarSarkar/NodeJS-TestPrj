@@ -41,7 +41,7 @@ export class RegisterComponent implements OnInit {
     this.as.registerUser(user).subscribe(data => {
       console.log(data);
       if(data.success){
-        this.fm.show("Successfully Registered, Please login", {cssClass:'alert-success', timeout:3000});
+        this.fm.show(data.msg, {cssClass:'alert-success', timeout:3000});
         this.rt.navigate(['/login']);
       }else{
         this.fm.show(data.msg, {cssClass:'alert-danger', timeout:3000}); 

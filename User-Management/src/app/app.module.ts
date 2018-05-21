@@ -16,6 +16,7 @@ import { FlashMessagesService } from 'angular2-flash-messages';
 import { ValidateService } from './services/validate.service';
 import { AuthService } from './services/auth.service';
 import { AuthGuard } from './auth.guard';
+import { ActivateComponent } from './activate/activate.component';
 
 
 const appRoutes = [
@@ -23,6 +24,7 @@ const appRoutes = [
   {path: 'register', component: RegisterComponent},
   {path: 'login', component: LoginComponent},
   {path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
+  {path: 'confirmation/:token', component: ActivateComponent},
   {path: '**', redirectTo: '', terminal: true}
 ];
 
@@ -33,14 +35,15 @@ const appRoutes = [
     HomeComponent,
     RegisterComponent,
     LoginComponent,
-    ProfileComponent
+    ProfileComponent,
+    ActivateComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     RouterModule.forRoot(appRoutes),
     HttpModule,
-    FlashMessagesModule
+    FlashMessagesModule   
   ],
   providers: [
     ValidateService,
