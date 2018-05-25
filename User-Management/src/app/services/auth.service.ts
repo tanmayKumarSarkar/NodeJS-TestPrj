@@ -29,6 +29,7 @@ export class AuthService {
   }
 
   loggedIn(){  
+    if(!tokenNotExpired('id_token')) localStorage.clear();
     return tokenNotExpired('id_token');
   }
 
@@ -81,6 +82,27 @@ export class AuthService {
     localStorage.removeItem('user');
     localStorage.setItem('user', JSON.stringify(user));
     this.getLuser();
+  }
+
+  resetPassword(id){
+    let headers = new Headers();
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.getToken());
+    return this.http.post(`${this.api}/api/reset`,id, {headers: headers})
+      .map(res=> res.json());
+  }
+
+  confirmNewPwdToken(token){
+    return this.http.get(`${this.api}/api/newpassword/${token}`)
+      .map(res=> res.json());
+  }
+
+  setNewPassword(id, pwd){
+    //console.log("id : ",id ,"password : ",pwd);
+    let headers = new Headers();
+    headers.append('Content-type', 'application/json');
+    return this.http.put(`${this.api}/api/setnewpwd/${id}`,{password: pwd}, {headers: headers})
+      .map(res=> res.json());
   }
 
   logout(){

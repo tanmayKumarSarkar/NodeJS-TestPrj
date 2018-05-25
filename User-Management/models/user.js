@@ -61,6 +61,15 @@ module.exports.comparePassword = (candidatePassword, hash, callback)=>{
     });
 }
 
+module.exports.hashPassword = (candidatePassword, callback)=>{
+    bcrypt.genSalt(10, function(err, salt) {
+        bcrypt.hash(candidatePassword, salt, function(err, hash) {
+            if(err) return err;
+            callback (null, hash);
+        });
+    });
+}
+
 // module.exports.findByIdAndUpdate = (id, value, options, (err,user)=>{
 //     if(err) throw err;
 //     res.json(user);

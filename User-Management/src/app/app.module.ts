@@ -17,6 +17,8 @@ import { ValidateService } from './services/validate.service';
 import { AuthService } from './services/auth.service';
 import { AuthGuard } from './auth.guard';
 import { ActivateComponent } from './activate/activate.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { NewPasswordComponent } from './new-password/new-password.component';
 
 
 const appRoutes = [
@@ -25,6 +27,8 @@ const appRoutes = [
   {path: 'login', component: LoginComponent},
   {path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
   {path: 'confirmation/:token', component: ActivateComponent},
+  {path: 'reset', component: ResetPasswordComponent},
+  {path: 'new/:token', component: NewPasswordComponent},
   {path: '**', redirectTo: '', terminal: true}
 ];
 
@@ -36,7 +40,9 @@ const appRoutes = [
     RegisterComponent,
     LoginComponent,
     ProfileComponent,
-    ActivateComponent
+    ActivateComponent,
+    ResetPasswordComponent,
+    NewPasswordComponent
   ],
   imports: [
     BrowserModule,

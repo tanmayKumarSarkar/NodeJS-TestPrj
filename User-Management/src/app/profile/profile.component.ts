@@ -46,10 +46,16 @@ export class ProfileComponent implements OnInit {
 
   getProfile(){
     this.as.getProfile().subscribe(profile =>{
-      this.user = profile.user;
-      this.as.user = this.user;
+      if(profile.success){
+        this.user = profile.user;
+        this.as.user = this.user;
+      }else{
+        //localStorage.clear();
+      }
+      
     },err=>{
       //console.log(err);
+      localStorage.clear();
       return false;
     });
   }
