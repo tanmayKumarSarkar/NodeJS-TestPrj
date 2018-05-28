@@ -3,6 +3,9 @@ import { ValidateService } from '../services/validate.service';
 import { FlashMessagesService } from 'angular2-flash-messages';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
+import { SessionCheckService } from '../services/session-check.service';
+import { JwtHelper } from 'angular2-jwt';
+import * as $ from 'jquery/dist/jquery.min.js';
 
 @Component({
   selector: 'app-profile',
@@ -15,11 +18,23 @@ export class ProfileComponent implements OnInit {
   isEditable: boolean;
   userS: { name: String,username: String,email: String};
 
-  constructor(private vs : ValidateService, private fm: FlashMessagesService, private as: AuthService, private rt: Router) { }
+  constructor(private vs : ValidateService,
+     private fm: FlashMessagesService, 
+     private as: AuthService, 
+     private rt: Router,
+     private sc: SessionCheckService,
+     private jwtHelper: JwtHelper) { }
 
   ngOnInit() {
     this.getProfile();
     this.isEditable = false;
+    // let tokenObs = this.sc.validate(this.as.getToken()).subscribe((res) => {
+    //     console.log(res);
+    //     if(!res){
+    //       console.log("session expired");
+    //     }
+    // });
+    
   }
 
   editProfile(){
@@ -59,5 +74,6 @@ export class ProfileComponent implements OnInit {
       return false;
     });
   }
+
   
 }

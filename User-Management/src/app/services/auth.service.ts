@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { tokenNotExpired } from 'angular2-jwt';
+import { SessionCheckService } from './session-check.service';
+declare var $: any;
 
 @Injectable()
 export class AuthService {
@@ -9,8 +11,9 @@ export class AuthService {
   authToken : any;
   user: { id:String, name: String,username: String,email: String}
   api: String = 'http://localhost:3000' || '';
+  isValid: Boolean = false;
 
-  constructor(private http: Http) {
+  constructor(private http: Http, private sc: SessionCheckService) {
     this.user= {id:'', name: '',username: '',email: ''};
    }
 
@@ -67,6 +70,7 @@ export class AuthService {
     localStorage.setItem('user', JSON.stringify(user));
     this.authToken = token;
     this.user = user;
+    this.isValid = true;
   }
 
   getToken(){
@@ -105,10 +109,22 @@ export class AuthService {
       .map(res=> res.json());
   }
 
+  trackSession(){
+    let tokenObs = this.sc.validate(this.getToken()).subscribe((res) => {
+      console.log(res);
+      if(!res){
+        this.isValid = false;
+        $("#myModal").modal('show');
+        console.log("session expired");
+      }
+  });
+  }
+
   logout(){
     this.authToken = null;
     this.user = null;
     localStorage.clear();
+    this.isValid = false;
   }
 
 }

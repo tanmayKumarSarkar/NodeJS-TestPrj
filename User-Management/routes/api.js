@@ -7,7 +7,7 @@ const User = require('../models/user');
 const nodemailer = require('nodemailer');
 
 const key = "PrivateKey";
-const tokenExp = '1800s';
+const tokenExp = '10s';
 const hurl = 'http://localhost:4200' || 'http://localhost:3000/api' ||'';
 
 const transporter = nodemailer.createTransport({

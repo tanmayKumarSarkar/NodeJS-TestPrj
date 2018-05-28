@@ -19,6 +19,9 @@ import { AuthGuard } from './auth.guard';
 import { ActivateComponent } from './activate/activate.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { NewPasswordComponent } from './new-password/new-password.component';
+import { SessionCheckService } from './services/session-check.service';
+import { JwtHelper } from 'angular2-jwt';
+import { ModalComponent } from './modal/modal.component';
 
 
 const appRoutes = [
@@ -42,7 +45,8 @@ const appRoutes = [
     ProfileComponent,
     ActivateComponent,
     ResetPasswordComponent,
-    NewPasswordComponent
+    NewPasswordComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,
@@ -55,7 +59,9 @@ const appRoutes = [
     ValidateService,
     FlashMessagesService,
     AuthService,
-    AuthGuard
+    AuthGuard,
+    SessionCheckService,
+    JwtHelper
   ],
   bootstrap: [AppComponent]
 })
