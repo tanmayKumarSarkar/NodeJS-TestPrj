@@ -112,7 +112,7 @@ export class AuthService {
   trackSession(){
     let tokenObs = this.sc.validate(this.getToken()).subscribe((res) => {
       console.log(res);
-      if(!res){
+      if(!res){console.log(res);
         this.isValid = false;
         $("#myModal").modal('show');
         console.log("session expired");
