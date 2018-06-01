@@ -7,7 +7,7 @@ const User = require('../models/user');
 const nodemailer = require('nodemailer');
 
 const key = "PrivateKey";
-const tokenExp = '10s';
+const tokenExp = '1800s';
 const hurl = 'http://localhost:4200' || 'http://localhost:3000/api' ||'';
 
 const transporter = nodemailer.createTransport({
@@ -295,6 +295,34 @@ function verifyToken(req, res, next){
     }
     next();
 }
+
+//User Extend Login....
+router.post('/extendlogin', (req, res)=>{console.log("extendAuthUser : ", req.body.token);
+    jwt.verify(req.body.token, key, (err, data)=>{console.log(data);
+        if(err) {
+            res.json({success: false, msg: 'Session Expired, Please Login Again'});
+          }else{
+            User.getUserByUserName(data.userX.username, (err, userX)=>{
+                if(err || !userX) return res.json({success: false, msg: 'Session Expired, Please Login Again'});
+                else{
+                    const token = jwt.sign({userX}, key, {expiresIn: tokenExp}, (err, token)=>{
+                        res.json({
+                            success: true,
+                            token: 'JWT '+token,
+                            user:{
+                                id : userX._id,
+                                name: userX.name,
+                                username: userX.username,
+                                email: userX.email
+                            }
+                        });
+                    });   
+                }
+                
+            });
+          }
+    }); 
+});     // End of the Extend login post
 
 validateRegister = (user)=>{
     if(user.name == undefined || user.username == undefined || user.email == undefined || user.password == undefined || !validateEmail(user.email) ){

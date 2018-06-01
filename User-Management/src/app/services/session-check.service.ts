@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { JwtHelper } from 'angular2-jwt';
 // import { Observable } from 'rxjs/Observable';
 // import 'rxjs/add/observable/interval';
-import {Observable} from 'rxjs/Rx';
+import {Observable, Subject} from 'rxjs/Rx';
 
 
 @Injectable()
@@ -11,17 +11,65 @@ export class SessionCheckService {
   constructor( private jwtHelper: JwtHelper){};
 
   intrvl: number = 1000;
+  public configObservable = new Subject<boolean>();
+  allEvents$;
+  idleTimeout: number = 5000; //check for idle in every ..mili seconds
+  idleTimeoutCountConst: number = 60000;  //max idle time in ..mili seconds
+  idleTimeoutCountTemp: number = this.idleTimeoutCountConst;
+  isIdle: boolean = false;
 
-  public validate( token:string ): Observable < any > {
-    return Observable.interval(this.intrvl)
-      .map( (x) => this.valiadteHelper(token) )
-      .filter(resp => this.valiadteHelper(token));
+  public validate(): Observable < any > {
+    if(localStorage.getItem('id_token') != null){
+      return Observable.interval(this.intrvl)
+        .map( (x) => this.valiadteHelper(localStorage.getItem('id_token')) );
+        //.filter(resp => this.valiadteHelper(token));
+    }
   }
 
   valiadteHelper(token){    
-    if(!this.jwtHelper.isTokenExpired(token) && localStorage.getItem('id_token') != null){
-      return true;
-    }else return false;    
+    if(localStorage.getItem('id_token') != null){
+      if(!this.jwtHelper.isTokenExpired(token)) return true;  
+      else return false;
+    }else {
+      return false;
+    }    
+  }
+
+  emitConfig(val) {
+    this.configObservable.next(val); 
+  }
+
+  eventHandeler(){
+    const eventNames = ['scroll', 'wheel', 'touchmove', 'touchend', 'mousedown', 'mousemove', 'mouseup', 'keydown', 'keyup', 'click'];
+
+    const eventStreams = eventNames.map((eventName) => {
+        return Observable.fromEvent(window, eventName);
+    });
+
+    this.allEvents$ = Observable.merge(...eventStreams);
+
+    const subscription = this.allEvents$.subscribe((event) => {
+      // console.log(event);
+      if(event){
+        this.idleTimeoutCountTemp = this.idleTimeoutCountConst;
+      }
+    });
+  //   let mouse = Observable.fromEvent(document, 'mousemove');
+  //   const md = Observable.fromEvent(document, 'mousedown');
+  //   const kd = Observable.fromEvent(document, 'keydown');
+  //   const allEvents$ = Observable.merge(md,kd,mouse);
+  //   allEvents$.subscribe((event) => {
+  //        console.log(event);
+  //  });
+  }
+  
+  idleChecker(){
+    return Observable.interval(this.idleTimeout)
+      .map( (x) => {
+        this.idleTimeoutCountTemp = this.idleTimeoutCountTemp - this.idleTimeout;
+        if(this.idleTimeoutCountTemp <= 1000) return this.isIdle = true;
+        else return this.isIdle = false;
+      });
   }
 
 }

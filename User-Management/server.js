@@ -10,10 +10,14 @@ const users = require('./routes/api');
 // const config = require('./config/database');
 
 
-mongoose.connect('mongodb://username:password@ds127139.mlab.com:27139/bookstore', (err)=>{
-    if(err) throw err;
-    else console.log('connected to database');	
-});
+mongoose.Promise = global.Promise;
+mongoose.connect('mongodb://username:password@ds127139.mlab.com:27139/bookstore')
+  .then(res => console.log("connected to database"))
+  .catch(err => console.log(err.message));
+// mongoose.connect('mongodb://username:password@ds127139.mlab.com:27139/bookstore', (err)=>{
+//     if(err) console.log(err.message);
+//     else console.log('connected to database');	
+// });
 
 const port = process.env.PORT || 3000;
 

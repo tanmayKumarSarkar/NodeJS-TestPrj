@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
 import 'rxjs/add/operator/map';
-import { tokenNotExpired } from 'angular2-jwt';
+import { tokenNotExpired, JwtHelper } from 'angular2-jwt';
 import { SessionCheckService } from './session-check.service';
 declare var $: any;
 
@@ -11,9 +11,11 @@ export class AuthService {
   authToken : any;
   user: { id:String, name: String,username: String,email: String}
   api: String = 'http://localhost:3000' || '';
-  isValid: Boolean = false;
+  islogOutBtn: Boolean = false;
+  tknExpTime;
+  tknExpNtfyTime = 120000;  //mili seconds
 
-  constructor(private http: Http, private sc: SessionCheckService) {
+  constructor(private http: Http, private sc: SessionCheckService, private jwtHelper: JwtHelper) {
     this.user= {id:'', name: '',username: '',email: ''};
    }
 
@@ -65,12 +67,22 @@ export class AuthService {
       .map(res=> res.json());
   }
 
+  extendAuthUser(){
+    let headers = new Headers();
+    headers.append('Content-type', 'application/json');
+    return this.http.post(`${this.api}/api/extendlogin`, {token: this.getToken()}, {headers: headers})
+      .map(res=> res.json());
+  }
+
   storeUserData(token, user){
     localStorage.setItem('id_token', token);
     localStorage.setItem('user', JSON.stringify(user));
     this.authToken = token;
     this.user = user;
-    this.isValid = true;
+    this.islogOutBtn = false;
+    //console.log(token);
+    //this.checkTokenExpiryTime();
+    //this.isValid = true;
   }
 
   getToken(){
@@ -79,6 +91,12 @@ export class AuthService {
 
   getLuser(){
     return this.user = JSON.parse(localStorage.getItem('user'));
+  }
+
+  checkTokenExpiryTime(){
+    if(this.getToken() != null){
+    this.tknExpTime = ((this.jwtHelper.decodeToken(this.getToken()).exp) - (this.jwtHelper.decodeToken(this.getToken()).iat) - this.tknExpNtfyTime/1000)*1000;
+    }
   }
 
   updateUser(user){
@@ -110,21 +128,57 @@ export class AuthService {
   }
 
   trackSession(){
-    let tokenObs = this.sc.validate(this.getToken()).subscribe((res) => {
-      console.log(res);
-      if(!res){console.log(res);
-        this.isValid = false;
-        $("#myModal").modal('show');
-        console.log("session expired");
+    let pres = null;
+    let fres = null;
+    let c = 1;
+    let tokenObs = this.sc.validate().subscribe((res) => {
+      pres == null ? pres=res : pres=pres;
+      fres = res;
+      //console.log("Count: ", c, "res: ", res, ", pres: ",pres, ", fres: ", fres);
+      if(!res){
+        if(pres != fres){
+          if(!this.islogOutBtn){
+            $("#idleModal").modal('hide');
+            $("#tknModal").modal('hide');
+            $("#myModal").modal('show');
+          }
+          //console.log("session expired");
+        }
       }
+      pres = fres;c++;
+      if(this.getToken() == null) tokenObs.unsubscribe();
   });
+  }
+
+  trackIdle(){
+    this.sc.eventHandeler();
+    let tokenObs = this.sc.idleChecker().subscribe((res) => {
+      if(res){
+        if(!$('#tknModal').is(':visible') && !$('#myModal').is(':visible')){
+          $("#idleModal").modal('show');
+            // console.log("session idle");
+        }
+      }
+      if(this.getToken() == null) tokenObs.unsubscribe();
+  });
+  }
+
+  trackTokenAlive(){
+    this.checkTokenExpiryTime();
+    setTimeout(()=>{
+      if(!$('#myModal').is(':visible')){
+        $("#idleModal").modal('hide');
+        $("#tknModal").modal('show');
+      }
+    }, this.tknExpTime);
   }
 
   logout(){
     this.authToken = null;
     this.user = null;
     localStorage.clear();
-    this.isValid = false;
+    this.islogOutBtn = true;
+    //this.isValid = false;
   }
 
 }

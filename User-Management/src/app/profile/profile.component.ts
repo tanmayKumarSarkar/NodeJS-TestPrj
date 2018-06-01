@@ -27,14 +27,10 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     this.getProfile();
-    this.isEditable = false;
-    // let tokenObs = this.sc.validate(this.as.getToken()).subscribe((res) => {
-    //     console.log(res);
-    //     if(!res){
-    //       console.log("session expired");
-    //     }
-    // });
-    
+    this.isEditable = false;    
+    this.as.trackSession();
+    this.as.trackIdle();
+    this.as.trackTokenAlive();
   }
 
   editProfile(){

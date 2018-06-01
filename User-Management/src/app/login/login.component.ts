@@ -34,7 +34,9 @@ export class LoginComponent implements OnInit {
             if(data.success){
               this.fm.show("Logged In", {cssClass:'alert-success', timeout:3000});
               this.as.storeUserData(data.token.split(' ')[1], data.user);
-              this.as.trackSession();
+              // this.as.trackSession();
+              // this.as.trackIdle();
+              // this.as.trackTokenAlive();
               this.rt.navigate(['/profile']);
             }else{
               this.fm.show(data.msg, {cssClass:'alert-danger', timeout:3000}); 
