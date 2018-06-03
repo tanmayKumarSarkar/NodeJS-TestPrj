@@ -36,7 +36,10 @@ export class AuthService {
   }
 
   loggedIn(){  
-    if(!tokenNotExpired('id_token')) localStorage.clear();
+    if(!tokenNotExpired('id_token') || (!localStorage.getItem('id_token'))){
+      localStorage.clear();
+      return false;
+    }
     return tokenNotExpired('id_token');
   }
 
@@ -92,7 +95,17 @@ export class AuthService {
   }
 
   getLuser(){
+    if(localStorage.getItem('user')){
     return this.user = JSON.parse(localStorage.getItem('user'));
+    }else{
+      if(this.loggedIn()){
+        this.updateUser(this.jwtHelper.decodeToken(this.getToken()).userX);
+        return this.user = JSON.parse(localStorage.getItem('user'));
+      }else{
+        localStorage.clear();
+        return false;
+      }
+    }
   }
 
   checkTokenExpiryTime(){
@@ -132,11 +145,11 @@ export class AuthService {
   trackSession(){
     let pres = null;
     let fres = null;
-    let c = 1;
+    let c = 1;console.log("Count :A: ", c);
     let tokenObs = this.sc.validate().subscribe((res) => {
       pres == null ? pres=res : pres=pres;
       fres = res;
-      //console.log("Count: ", c, "res: ", res, ", pres: ",pres, ", fres: ", fres);
+      console.log("Count: ", c, "res: ", res, ", pres: ",pres, ", fres: ", fres);
       if(!res){
         if(pres != fres){
           if(!this.islogOutBtn){
@@ -179,18 +192,22 @@ export class AuthService {
     const id = this.jwtHelper.decodeToken(this.getToken()).userX.username;
     return this.http.get(`${this.api}/api/user/permission/${id}`)
       .map(res=> res.json());
-      // console.log("step4");
-      // return this.permission;
   }
   
-  getUserRole(){
+  setUserRole(){
     this.getPermission().subscribe(role=> {
       this.permission = role.permission;
-      return (this.permission == 'admin' || this.permission == 'moderator') ? true : false;
     },err=>{
       this.permission = '';
-      return false;
     });
+  }
+
+  canMngRole(){
+    if(this.permission){
+      return (this.permission == 'admin' || this.permission == 'moderator') ? true : false;
+    }else{
+      return false;
+    }
   }
 
   logout(){
@@ -198,6 +215,7 @@ export class AuthService {
     this.user = null;
     localStorage.clear();
     this.islogOutBtn = true;
+    this.permission = '';
     //this.isValid = false;
   }
 

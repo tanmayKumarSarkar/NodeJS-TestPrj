@@ -9,12 +9,15 @@ import { AuthService } from '../services/auth.service';
 })
 export class ManagementComponent implements OnInit {
 
+  user: { id: String, name: String,username: String,email: String};
+
   constructor(private as: AuthService, private rt: Router) { }
 
   ngOnInit() {
     if(this.as.isNewlyLoaded){
     this.rt.navigate(['/profile']);
     }
+    this.user = this.as.user;
   }
 
 }

@@ -25,11 +25,11 @@ export class ProfileComponent implements OnInit {
      private sc: SessionCheckService,
      private jwtHelper: JwtHelper) { }
 
-  ngOnInit() {
+  ngOnInit() {console.log("in profile: ");
     this.as.isNewlyLoaded = false;
     this.getProfile();
     this.isEditable = false;  
-    this.setUserRole();
+    this.as.setUserRole();
     this.as.trackSession();
     this.as.trackIdle();
     this.as.trackTokenAlive();
@@ -73,14 +73,14 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  setUserRole(){
-    this.as.getPermission().subscribe(role=> {
-      this.as.permission = role.permission;
-    },err=>{
-      this.as.permission = '';
-      return false;
-    });
-  }
+  // setUserRole(){
+  //   this.as.getPermission().subscribe(role=> {
+  //     this.as.permission = role.permission;
+  //   },err=>{
+  //     this.as.permission = '';
+  //     return false;
+  //   });
+  // }
 
   
 }

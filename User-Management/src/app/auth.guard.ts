@@ -16,7 +16,7 @@ export class AuthGuard implements CanActivate {
       return true;
       }
       else if(state.url == '/management'){
-        if(this.as.permission == 'admin'){
+        if(this.as.permission == 'admin' || this.as.permission == 'moderator'){
           return true;
         }else{
           if(this.as.permission == undefined || this.as.permission == ''){

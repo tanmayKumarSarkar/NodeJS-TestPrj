@@ -67,7 +67,7 @@ export class SessionCheckService {
     return Observable.interval(this.idleTimeout)
       .map( (x) => {
         this.idleTimeoutCountTemp = this.idleTimeoutCountTemp - this.idleTimeout;
-        console.log(this.idleTimeoutCountTemp);
+        //console.log(this.idleTimeoutCountTemp);
         if(this.idleTimeoutCountTemp <= 1000) return this.isIdle = true;
         else return this.isIdle = false;
       });
