@@ -22,6 +22,7 @@ import { NewPasswordComponent } from './new-password/new-password.component';
 import { SessionCheckService } from './services/session-check.service';
 import { JwtHelper } from 'angular2-jwt';
 import { ModalComponent } from './modal/modal.component';
+import { ManagementComponent } from './management/management.component';
 
 
 const appRoutes = [
@@ -32,6 +33,7 @@ const appRoutes = [
   {path: 'confirmation/:token', component: ActivateComponent},
   {path: 'reset', component: ResetPasswordComponent},
   {path: 'new/:token', component: NewPasswordComponent},
+  {path: 'management', component: ManagementComponent, canActivate: [AuthGuard]},
   {path: '**', redirectTo: '', terminal: true}
 ];
 
@@ -46,7 +48,8 @@ const appRoutes = [
     ActivateComponent,
     ResetPasswordComponent,
     NewPasswordComponent,
-    ModalComponent
+    ModalComponent,
+    ManagementComponent
   ],
   imports: [
     BrowserModule,

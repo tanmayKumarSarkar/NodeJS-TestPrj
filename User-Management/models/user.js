@@ -33,6 +33,11 @@ const UserSchema = new Schema({
     temptoken : {
         type: String,
         required: true
+    },
+    permission : {
+        type: String,
+        required: true,
+        default: 'user'
     }
 });
 

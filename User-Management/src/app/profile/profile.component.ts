@@ -14,7 +14,7 @@ import * as $ from 'jquery/dist/jquery.min.js';
 })
 export class ProfileComponent implements OnInit {
 
-  user: { id: String, name: String,username: String,email: String};;
+  user: { id: String, name: String,username: String,email: String};
   isEditable: boolean;
   userS: { name: String,username: String,email: String};
 
@@ -26,8 +26,10 @@ export class ProfileComponent implements OnInit {
      private jwtHelper: JwtHelper) { }
 
   ngOnInit() {
+    this.as.isNewlyLoaded = false;
     this.getProfile();
-    this.isEditable = false;    
+    this.isEditable = false;  
+    this.setUserRole();
     this.as.trackSession();
     this.as.trackIdle();
     this.as.trackTokenAlive();
@@ -67,6 +69,15 @@ export class ProfileComponent implements OnInit {
     },err=>{
       //console.log(err);
       localStorage.clear();
+      return false;
+    });
+  }
+
+  setUserRole(){
+    this.as.getPermission().subscribe(role=> {
+      this.as.permission = role.permission;
+    },err=>{
+      this.as.permission = '';
       return false;
     });
   }

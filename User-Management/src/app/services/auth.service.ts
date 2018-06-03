@@ -13,7 +13,9 @@ export class AuthService {
   api: String = 'http://localhost:3000' || '';
   islogOutBtn: Boolean = false;
   tknExpTime;
-  tknExpNtfyTime = 120000;  //mili seconds
+  tknExpNtfyTime = 2*60*1000;  //mili seconds
+  isNewlyLoaded = true;
+  permission;
 
   constructor(private http: Http, private sc: SessionCheckService, private jwtHelper: JwtHelper) {
     this.user= {id:'', name: '',username: '',email: ''};
@@ -171,6 +173,24 @@ export class AuthService {
         $("#tknModal").modal('show');
       }
     }, this.tknExpTime);
+  }
+
+  getPermission(){
+    const id = this.jwtHelper.decodeToken(this.getToken()).userX.username;
+    return this.http.get(`${this.api}/api/user/permission/${id}`)
+      .map(res=> res.json());
+      // console.log("step4");
+      // return this.permission;
+  }
+  
+  getUserRole(){
+    this.getPermission().subscribe(role=> {
+      this.permission = role.permission;
+      return (this.permission == 'admin' || this.permission == 'moderator') ? true : false;
+    },err=>{
+      this.permission = '';
+      return false;
+    });
   }
 
   logout(){

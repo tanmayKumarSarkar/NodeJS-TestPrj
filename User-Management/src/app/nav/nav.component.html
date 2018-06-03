@@ -14,6 +14,7 @@
           </li> 
           <!--li *ngIf="this.as.loggedIn()"  class="nav-item"><a class="nav-link" routerLink="/dashboard" routerLinkActive="active">Dashboard</a></li-->
           <li *ngIf="this.as.loggedIn()"  class="nav-item"><a class="nav-link" routerLink="/profile" routerLinkActive="active">Profile</a></li>
+          <li *ngIf="this.as.loggedIn()"  class="nav-item"><a class="nav-link" routerLink="/management" routerLinkActive="active">Management</a></li>
           <li *ngIf="this.as.loggedIn()" class="nav-item">
               <a class="nav-link" href="#" (click)="onLogoutClick()">LogOut</a>
           </li>

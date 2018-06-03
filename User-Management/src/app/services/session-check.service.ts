@@ -13,8 +13,8 @@ export class SessionCheckService {
   intrvl: number = 1000;
   public configObservable = new Subject<boolean>();
   allEvents$;
-  idleTimeout: number = 5000; //check for idle in every ..mili seconds
-  idleTimeoutCountConst: number = 60000;  //max idle time in ..mili seconds
+  idleTimeout: number = 5*1000; //check for idle in every ..mili seconds
+  idleTimeoutCountConst: number = 5*60*1000;  //max idle time in ..mili seconds
   idleTimeoutCountTemp: number = this.idleTimeoutCountConst;
   isIdle: boolean = false;
 
@@ -67,6 +67,7 @@ export class SessionCheckService {
     return Observable.interval(this.idleTimeout)
       .map( (x) => {
         this.idleTimeoutCountTemp = this.idleTimeoutCountTemp - this.idleTimeout;
+        console.log(this.idleTimeoutCountTemp);
         if(this.idleTimeoutCountTemp <= 1000) return this.isIdle = true;
         else return this.isIdle = false;
       });

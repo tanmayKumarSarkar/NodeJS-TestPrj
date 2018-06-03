@@ -262,6 +262,14 @@ router.put('/profile/:id', (req, res)=>{
     // });
   });
 
+  router.get('/user/permission/:id', (req, res)=>{
+    User.findOne({username: req.params.id}, (err, user)=>{
+        if(err) res.json({success: false, msg: err.codeName});
+        else res.json({success: true, msg: "user permission", permission: user.permission});
+      });
+  });
+
+
 router.get('/users', (req, res)=>{
     User.find({})
       .exec((err, users)=>{
@@ -272,8 +280,8 @@ router.get('/users', (req, res)=>{
   
 router.get('/users/:id', (req, res)=>{
     User.findById(req.params.id, (err, user)=>{
-        if(err) res.status(403).json({success: false, msg: err.codeName});
-        res.json(user);
+        if(err) res.json({success: false, msg: err.codeName});
+        res.json({success: true, msg: "user details", user: user});
       });
   });
 
