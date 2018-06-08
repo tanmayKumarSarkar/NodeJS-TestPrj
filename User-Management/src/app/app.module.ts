@@ -23,6 +23,7 @@ import { SessionCheckService } from './services/session-check.service';
 import { JwtHelper } from 'angular2-jwt';
 import { ModalComponent } from './modal/modal.component';
 import { ManagementComponent } from './management/management.component';
+import { EditUserComponent } from './edit-user/edit-user.component';
 
 
 const appRoutes = [
@@ -34,6 +35,7 @@ const appRoutes = [
   {path: 'reset', component: ResetPasswordComponent},
   {path: 'new/:token', component: NewPasswordComponent},
   {path: 'management', component: ManagementComponent, canActivate: [AuthGuard]},
+  {path: 'user/edit/:id', component: EditUserComponent, canActivate: [AuthGuard]},
   {path: '**', redirectTo: '', terminal: true}
 ];
 
@@ -49,7 +51,8 @@ const appRoutes = [
     ResetPasswordComponent,
     NewPasswordComponent,
     ModalComponent,
-    ManagementComponent
+    ManagementComponent,
+    EditUserComponent
   ],
   imports: [
     BrowserModule,

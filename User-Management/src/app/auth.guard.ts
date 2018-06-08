@@ -26,7 +26,19 @@ export class AuthGuard implements CanActivate {
           console.log("s1",this.as.permission);
           return false;
         }
-      }else{ 
+      }else if(state.url.startsWith("/user/edit/")){
+        if(this.as.permission == 'admin' || this.as.permission == 'moderator'){
+          return true;
+        }else{
+          if(this.as.permission == undefined || this.as.permission == ''){
+            this.router.navigate(['/profile']);
+            return true;
+          }
+          console.log("s3",this.as.permission);
+          return false;
+        }
+      }
+      else{ 
         console.log("S2",this.as.permission);
         return false;
       }

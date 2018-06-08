@@ -1,0 +1,92 @@
+<div class="container" >
+  <div class="jumbotron text-center">
+    <h1 class="display-4">User Management Site</h1>
+    <p class="">Welcome to my Dummy Site!! Manage you business here....</p>
+  </div>
+
+  <div *ngIf="user" class="container">
+      <h3>Profile: {{user.username}}</h3>
+      <p class="">Edit User profile from here....</p>
+      <br>
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" data-toggle="tab" href="#name">Name</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#permission">Permission</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#active">Active</a>
+        </li>
+      </ul>
+    
+      <!-- Tab panes -->
+      <div class="tab-content">
+        <div id="name" class="container tab-pane active px-0">
+          <div class="card text-white bg-success mx-auto py-0" >
+            <div class="card-header">Name</div>
+            <div class="card-body">
+              <input type="text" class="form-control" id="name" required [(ngModel)]="userUp.name" name="name"><br>
+              <button type="button" class="btn btn-sm btn-warning btn-create" 
+                        (click)="updateProfile(user._id, 'name')"
+                        [disabled]="(userUp.name=='')">Update
+              </button>
+            </div>
+          </div>
+        </div>
+
+
+        <div id="permission" class="container tab-pane fade px-0">
+          <div class="card text-white bg-info mx-auto py-0" >
+              <div class="card-header">Permission</div>
+              <div class="card-body">
+                <input type="text" class="form-control" id="permission" required [(ngModel)]="userUp.permission" name="permission"><br>
+                <button type="button" class="btn btn-sm btn-light btn-create" 
+                          (click)="updateProfile(user._id, 'permission')"
+                          [disabled]="(userUp.permission=='')">Update
+                </button>
+              </div>
+            </div>
+        </div>
+
+
+        <div id="active" class="container tab-pane fade px-0">
+          <div class="card text-white bg-dark mx-auto py-0" >
+              <div class="card-header">Active</div>
+              <div class="card-body">
+                <!--radio-->
+                <fieldset class="form-group">
+                    <legend>Radio buttons</legend>
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+                        Option one is this and that&mdash;be sure to include why it's great
+                      </label>
+                    </div>
+                    <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="option2">
+                        Option two can be something else and selecting it will deselect option one
+                      </label>
+                    </div>
+                    <div class="form-check disabled">
+                    <label class="form-check-label">
+                        <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios3" value="option3" disabled>
+                        Option three is disabled
+                      </label>
+                    </div>
+                  </fieldset>
+                  <!---->
+
+                <input type="radio" class="form-control" id="active" required [(ngModel)]="userUp.active" name="active"><br>
+                <button type="button" class="btn btn-sm btn-secondary btn-create" 
+                          (click)="updateProfile(user._id, 'active')"
+                          [disabled]="(userUp.name=='')">Update
+                </button>
+              </div>
+            </div>
+        </div>
+    </div>
+
+</div>

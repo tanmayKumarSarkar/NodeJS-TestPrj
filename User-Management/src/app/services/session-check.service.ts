@@ -17,6 +17,7 @@ export class SessionCheckService {
   idleTimeoutCountConst: number = 5*60*1000;  //max idle time in ..mili seconds
   idleTimeoutCountTemp: number = this.idleTimeoutCountConst;
   isIdle: boolean = false;
+  eventSub;
 
   public validate(): Observable < any > {
     if(localStorage.getItem('id_token') != null){
@@ -48,12 +49,15 @@ export class SessionCheckService {
 
     this.allEvents$ = Observable.merge(...eventStreams);
 
-    const subscription = this.allEvents$.subscribe((event) => {
-      // console.log(event);
-      if(event){
-        this.idleTimeoutCountTemp = this.idleTimeoutCountConst;
-      }
-    });
+    //console.log(this.eventSub);
+    if(this.eventSub == undefined){
+      this.eventSub = this.allEvents$.subscribe((event) => {
+        if(event){
+          this.idleTimeoutCountTemp = this.idleTimeoutCountConst;
+          //console.log("event: ", event);
+        }
+      });
+    }
   //   let mouse = Observable.fromEvent(document, 'mousemove');
   //   const md = Observable.fromEvent(document, 'mousedown');
   //   const kd = Observable.fromEvent(document, 'keydown');

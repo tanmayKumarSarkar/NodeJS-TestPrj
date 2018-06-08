@@ -1,64 +1,83 @@
 <div class="container" >
-  <div class="row">
-      <div class="col-xs-12 col-sm-6 col-md-6">
-          <div class="well well-sm">
-              <div class="row prf-card col-sm-6 col-md-6">
-                  
-                  <div class="col-sm-12 col-md-12">
-                      <h4>{{user.name | titlecase}}</h4>
-                      <small><cite title="San Francisco, USA">San Francisco, USA <i class="glyphicon glyphicon-map-marker">
-                      </i></cite></small>
-                      <p>
-                          <i class="glyphicon glyphicon-envelope"></i>{{user.email}}
-                          <br />
-                  </div>
-              </div>
-          </div>
-      </div>
+  <div class="jumbotron text-center">
+      <h1 class="display-4">User Management Site</h1>
+      <p class="">Welcome to my Dummy Site!! Manage you business here....</p>
   </div>
-  <div class="col-md-10 col-md-offset-1">
-
-      <div class="panel panel-default panel-table">
-        <div class="panel-heading">
-          <div class="row">
-            <div class="col col-xs-6">
-              <h3 class="panel-title">Profile Details</h3>
-            </div>
-            <div class="col col-xs-6 text-right">
-              <!--button type="button" class="btn btn-sm btn-primary btn-create">Update</button-->
-            </div>
+  
+  <div class="row">
+      <div class="col-md-6">
+          <div class="input-group form-inline ml-3 my-lg-0">
+            <span class="input-group-addon  my-2">No. of Results to display </span>
+            <input type="text" class="form-control mr-sm-2 ml-2" placeholder="Limit" aria-label="Limit"
+            type="number" pattern="[0-9]*" required minlength="4" [(ngModel)]=listLimit>
           </div>
         </div>
-        <div class="panel-body">
-          <table class="table table-striped table-bordered table-list">
-            <thead>
-              <tr>
-                  <th><em class="fa fa-cog"></em></th>
-                  <th class="hidden-xs">Username</th>
-                  <th>Name</th>
-                  <th>Email</th>
-              </tr> 
-            </thead>
-            <tbody>
-                    <tr>
-                      <td align="center">
-                          <button *ngIf="!isEditable" type="button" class="btn btn-sm btn-danger btn-create" (click)="editProfile()">Edit</button>
-                          <button *ngIf="isEditable" type="button" class="btn btn-sm btn-primary btn-create" 
-                          (click)="updateProfile(user._id)"
-                          [disabled]="(userS.username=='' || userS.name=='' || userS.email=='')">Update</button>
-                      </td>
-                      <td *ngIf="!isEditable">{{user.username}}</td>
-                      <td *ngIf="isEditable"><input type="text" class="form-control" id="username" required [readonly]="true" [(ngModel)]="userS.username" name="username"></td>
-                      <td *ngIf="!isEditable">{{user.name}}</td>
-                      <td *ngIf="isEditable"><input type="text" class="form-control" id="name" required [(ngModel)]="userS.name" name="name"></td>
-                      <td *ngIf="!isEditable">{{user.email}}</td>
-                      <td *ngIf="isEditable"><input type="text" class="form-control" id="email" [readonly]="true" required [(ngModel)]="userS.email" name="email"></td>
-                    </tr>
-                  </tbody>
-          </table>
-      
+        <div class="col-md-3">
+            <button type="button" class="btn btn-success my-2 my-sm-0" (click)="applyFilter()">Apply Filter</button>
+            <button type="button" class="btn btn-warning my-2 my-sm-0" (click)="removeFilter()">Show All</button>
         </div>
+        <div class="col-md-3">
+            <div class="input-group form-inline ml-3 my-lg-0">
+                <span *ngIf="!validInp" class="my-2 text-danger">**Please enter a valid input </span>
+              </div>
+        </div>
+  </div>
 
+  <div class="col-md-12 col-md-offset-1">
+
+    <div class="card mt-2">
+      <div class="card-header bg-primary text-white"><strong>User Management</strong></div>
+      
+    </div>
+    <!--Table-->
+    <table class="table table-striped table-list">
+        <thead>
+          <tr>
+              <th>Name</th>
+              <th>Username</th>              
+              <th>Email</th>
+          </tr> 
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users | slice:listStart:listEnd;">
+            <td *ngIf="!isEditable">{{user.name}}</td>
+            <td *ngIf="isEditable"><input type="text" class="form-control" id="name" required [(ngModel)]="userS.name" name="name"></td>
+            <td *ngIf="!isEditable">{{user.username}}</td>
+            <td *ngIf="isEditable"><input type="text" class="form-control" id="username" required [readonly]="true" [(ngModel)]="userS.username" name="username"></td>
+            <td *ngIf="!isEditable">{{user.email}}</td>
+            <td *ngIf="isEditable"><input type="text" class="form-control" id="email" [readonly]="true" required [(ngModel)]="userS.email" name="email"></td>
+            <td align="center">
+                <button *ngIf="canEdit" type="button" class="btn btn-sm btn-success btn-create" routerLink="/user/edit/{{user._id}}">Edit</button>
+            </td>
+            <td align="center">
+                <button *ngIf="canDelete" type="button" class="btn btn-sm btn-danger btn-create" (click)="deleteUser(user)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <!--Table-->
+
+      <div *ngIf="listEnd>5" class="row">
+          <div class="col-md-6">
+              <div class="input-group form-inline ml-3 my-lg-0">
+                <span class="input-group-addon  my-2">No. of Results to display </span>
+                <input type="text" class="form-control mr-sm-2 ml-2" placeholder="Limit" aria-label="Limit"
+                type="number" pattern="[0-9]*" required minlength="4" [(ngModel)]=listLimit>
+              </div>
+            </div>
+            <div class="col-md-3">
+                <button type="button" class="btn btn-success my-2 my-sm-0" (click)="applyFilter()">Apply Filter</button>
+                <button type="button" class="btn btn-warning my-2 my-sm-0" (click)="removeFilter()">Show All</button>
+            </div>
+            <div class="col-md-3">
+                <div class="input-group form-inline ml-3 my-lg-0">
+                    <span *ngIf="!validInp" class="my-2 text-danger">**Please enter a valid input </span>
+                  </div>
+            </div>
+      </div>
+
+
+  </div>
 </div>
 
 

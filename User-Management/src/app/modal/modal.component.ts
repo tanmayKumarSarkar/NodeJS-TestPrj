@@ -48,6 +48,7 @@ export class ModalComponent implements OnInit {
               this.as.storeUserData(data.token.split(' ')[1], data.user);
               //this.as.trackSession();
               this.rt.navigate(['/profile']);
+              this.as.trackTokenAlive();
             }else{
               this.fm.show(data.msg, {cssClass:'alert-danger', timeout:3000}); 
               this.rt.navigate(['/login']);

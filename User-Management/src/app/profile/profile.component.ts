@@ -14,7 +14,7 @@ import * as $ from 'jquery/dist/jquery.min.js';
 })
 export class ProfileComponent implements OnInit {
 
-  user: { id: String, name: String,username: String,email: String};
+  user: { id: String, name: String,username: String,email: String, permission: String};
   isEditable: boolean;
   userS: { name: String,username: String,email: String};
 
@@ -25,7 +25,7 @@ export class ProfileComponent implements OnInit {
      private sc: SessionCheckService,
      private jwtHelper: JwtHelper) { }
 
-  ngOnInit() {console.log("in profile: ");
+  ngOnInit() {
     this.as.isNewlyLoaded = false;
     this.getProfile();
     this.isEditable = false;  

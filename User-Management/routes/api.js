@@ -77,7 +77,8 @@ router.post('/login', (req, res)=>{
                                 id : userX._id,
                                 name: userX.name,
                                 username: userX.username,
-                                email: userX.email
+                                email: userX.email,
+                                permission: userX.permission
                             }
                         });
                     });                    
@@ -270,18 +271,45 @@ router.put('/profile/:id', (req, res)=>{
   });
 
 
-router.get('/users', (req, res)=>{
-    User.find({})
-      .exec((err, users)=>{
-        if(err) res.status(403).json({success: false, msg: err.codeName});
-        res.json(users);
+router.post('/getusers', (req, res)=>{
+    User.find({username: req.body.username}, (err, user)=>{
+        if(err  || user.length<=0) {
+            res.json({success: false, msg: "Authorization Restrictred"});
+        }else{
+            if(user[0].permission == 'admin' || user[0].permission == 'moderator'){
+                User.find({})
+                    .exec((err, users)=>{
+                        if(err) res.json({success: false, msg: "Authorization Restrictred", permission: user.permission});
+                        res.json({success: true, msg: "All users", users: users});
+                    });
+            }else{
+                res.json({success: false, msg: "Authorization Restrictred", permission: user[0].permission});
+            }
+        }
+      });
+  });
+
+  router.post('/deleteuser/:id', (req, res)=>{
+    User.find({username: req.body.username}, (err, user)=>{
+        if(err  || user.length<=0) {
+            res.json({success: false, msg: "Authorization Restrictred"});
+        }else{
+            if(user[0].permission == 'admin'){
+                User.findByIdAndRemove(req.params.id, (err,user)=>{
+                    if(err) res.json({success: false, msg: "Authorization Restrictred"});
+                    res.json({success: true, msg: `User deleted of ID : ${req.params.id}`, user: user});
+                });
+            }else{
+                res.json({success: false, msg: "Authorization Restrictred", permission: user[0].permission});
+            }
+        }
       });
   });
   
 router.get('/users/:id', (req, res)=>{
     User.findById(req.params.id, (err, user)=>{
-        if(err) res.json({success: false, msg: err.codeName});
-        res.json({success: true, msg: "user details", user: user});
+        if(err) res.json({success: false, msg: "user not found, please try again"});
+        res.json({success: true, msg: "user details found", user: user});
       });
   });
 
@@ -321,7 +349,8 @@ router.post('/extendlogin', (req, res)=>{console.log("extendAuthUser : ", req.bo
                                 id : userX._id,
                                 name: userX.name,
                                 username: userX.username,
-                                email: userX.email
+                                email: userX.email,
+                                permission: userX.permission
                             }
                         });
                     });   

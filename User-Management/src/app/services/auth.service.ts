@@ -9,16 +9,19 @@ declare var $: any;
 export class AuthService {
 
   authToken : any;
-  user: { id:String, name: String,username: String,email: String}
+  user: { id:String, name: String,username: String,email: String, permission: String}
   api: String = 'http://localhost:3000' || '';
   islogOutBtn: Boolean = false;
   tknExpTime;
-  tknExpNtfyTime = 2*60*1000;  //mili seconds
+  tknExpNtfyTime = 1*60*1000;  //mili seconds
   isNewlyLoaded = true;
   permission;
+  sessionSub;
+  idleSub;
+  tokenTimeout;
 
   constructor(private http: Http, private sc: SessionCheckService, private jwtHelper: JwtHelper) {
-    this.user= {id:'', name: '',username: '',email: ''};
+    this.user= {id:'', name: '',username: '',email: '', permission: ''};
    }
 
   registerUser(user){
@@ -145,52 +148,78 @@ export class AuthService {
   trackSession(){
     let pres = null;
     let fres = null;
-    let c = 1;console.log("Count :A: ", c);
-    let tokenObs = this.sc.validate().subscribe((res) => {
-      pres == null ? pres=res : pres=pres;
-      fres = res;
-      console.log("Count: ", c, "res: ", res, ", pres: ",pres, ", fres: ", fres);
-      if(!res){
-        if(pres != fres){
-          if(!this.islogOutBtn){
-            $("#idleModal").modal('hide');
-            $("#tknModal").modal('hide');
-            $("#myModal").modal('show');
+    let c = 1;//console.log("Count :A: ", c);
+    if(this.sessionSub == undefined){
+      this.sessionSub = this.sc.validate().subscribe((res) => {
+        pres == null ? pres=res : pres=pres;
+        fres = res;
+        //console.log("Count: ", c, "res: ", res, ", pres: ",pres, ", fres: ", fres);
+        if(!res){
+          if(pres != fres){
+            if(!this.islogOutBtn){
+              $("#idleModal").modal('hide');
+              $("#tknModal").modal('hide');
+              $("#myModal").modal('show');
+            }
+            //console.log("session expired");
           }
-          //console.log("session expired");
         }
-      }
-      pres = fres;c++;
-      if(this.getToken() == null) tokenObs.unsubscribe();
-  });
+        pres = fres;c++;
+        //if(this.getToken() == null) this.sessionSub.unsubscribe();
+      });
+    }
   }
 
   trackIdle(){
     this.sc.eventHandeler();
-    let tokenObs = this.sc.idleChecker().subscribe((res) => {
-      if(res){
-        if(!$('#tknModal').is(':visible') && !$('#myModal').is(':visible')){
-          $("#idleModal").modal('show');
-            // console.log("session idle");
+    if(this.idleSub == undefined){
+      this.idleSub = this.sc.idleChecker().subscribe((res) => {
+        if(res){
+          if(!$('#tknModal').is(':visible') && !$('#myModal').is(':visible')){
+            $("#idleModal").modal('show');
+              // console.log("session idle");
+          }
         }
-      }
-      if(this.getToken() == null) tokenObs.unsubscribe();
-  });
+        if(this.getToken() == null) this.idleSub.unsubscribe();
+      });
+    }
   }
 
   trackTokenAlive(){
+    //console.log(this.tokenTimeout);
     this.checkTokenExpiryTime();
-    setTimeout(()=>{
-      if(!$('#myModal').is(':visible')){
-        $("#idleModal").modal('hide');
-        $("#tknModal").modal('show');
-      }
-    }, this.tknExpTime);
+    if(this.tokenTimeout == undefined || this.tokenTimeout == 'complete'){
+      this.tokenTimeout = setTimeout(()=>{
+        if(!$('#myModal').is(':visible')){
+          $("#idleModal").modal('hide');
+          console.log($('#myModal').is(':visible'));
+          $("#tknModal").modal('show');
+          this.tokenTimeout = 'complete';
+        }
+      }, this.tknExpTime);
+      this.tokenTimeout = '';
+    }
   }
 
   getPermission(){
     const id = this.jwtHelper.decodeToken(this.getToken()).userX.username;
     return this.http.get(`${this.api}/api/user/permission/${id}`)
+      .map(res=> res.json());
+  }
+
+  getAllUsers(){
+    const username = this.jwtHelper.decodeToken(this.getToken()).userX.username;
+    let headers = new Headers();
+    headers.append('Content-type', 'application/json');
+    return this.http.post(`${this.api}/api/getusers`,{username:username}, {headers: headers})
+      .map(res=> res.json());
+  }
+
+  deleteUserAPI(id){
+    const username = this.jwtHelper.decodeToken(this.getToken()).userX.username;
+    let headers = new Headers();
+    headers.append('Content-type', 'application/json');
+    return this.http.post(`${this.api}/api/deleteuser/${id}`,{username:username}, {headers: headers})
       .map(res=> res.json());
   }
   
@@ -208,6 +237,11 @@ export class AuthService {
     }else{
       return false;
     }
+  }
+
+  getUserDetailAPI(id){
+    return this.http.get(`${this.api}/api/users/${id}`)
+      .map(res=> res.json());
   }
 
   logout(){
