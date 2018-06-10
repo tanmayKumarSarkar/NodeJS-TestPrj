@@ -239,14 +239,14 @@ router.put('/setnewpwd/:id', (req, res)=>{
 router.post('/profile', verifyToken, (req, res)=>{
     jwt.verify(req.token, key, (err, authData)=>{
         if(err) res.status(403).json({success: false, msg: "Token Invalid"});
-        else{console.log(authData.exp);
+        else{
             User.findById(authData.userX._id, (err, user)=>{
                 if(err) res.status(403).json({success: false, msg: err.codeName});
                 res.json({success: true, msg: "Token Verified", user: user, exp: authData.exp});
               });
         } 
         /*res.json({success: true, msg: "Token Verified", user: authData.userX});*/    
-    });
+    });    
 });
 
 router.put('/profile/:id', (req, res)=>{
@@ -333,8 +333,8 @@ function verifyToken(req, res, next){
 }
 
 //User Extend Login....
-router.post('/extendlogin', (req, res)=>{console.log("extendAuthUser : ", req.body.token);
-    jwt.verify(req.body.token, key, (err, data)=>{console.log(data);
+router.post('/extendlogin', (req, res)=>{
+    jwt.verify(req.body.token, key, (err, data)=>{
         if(err) {
             res.json({success: false, msg: 'Session Expired, Please Login Again'});
           }else{

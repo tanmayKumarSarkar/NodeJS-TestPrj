@@ -17,4 +17,8 @@ export class HomeComponent implements OnInit {
       }
   }
 
+  ngOnDestroy(){
+    this.as.refreshLocalUser();
+  }
+
 }

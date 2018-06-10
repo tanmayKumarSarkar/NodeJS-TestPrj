@@ -52,6 +52,7 @@ UserSchema.pre('save', function(next){
     });    
 });
 
+
 const User = module.exports = mongoose.model('User', UserSchema);
 
 module.exports.getUserByUserName = (username, callback)=>{
@@ -75,6 +76,12 @@ module.exports.hashPassword = (candidatePassword, callback)=>{
     });
 }
 
+// module.exports.checkUpdate = (doc, callback)=>{
+//     if(doc.isModified()){
+//         console.log("st1");
+//     }
+//     console.log("err");
+// }
 // module.exports.findByIdAndUpdate = (id, value, options, (err,user)=>{
 //     if(err) throw err;
 //     res.json(user);

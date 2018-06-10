@@ -18,6 +18,8 @@ export class ManagementComponent implements OnInit {
   listEnd;
   listLimit;
   validInp = true;
+  listPages = [];
+  listActivePage;
 
   constructor(private as: AuthService, private rt: Router) { }
 
@@ -37,6 +39,8 @@ export class ManagementComponent implements OnInit {
           this.canDelete = true;
           this.canEdit = true;
           this.usersCount = this.listEnd = this.listLimit = this.users.length;
+          this.listPages = [{index: 0, listStart: 0, listEnd: this.usersCount }];
+          this.listActivePage = 0;
         }if(this.user.permission == 'moderator'){
           this.canDelete = false;
           this.canEdit = true;
@@ -52,9 +56,14 @@ export class ManagementComponent implements OnInit {
 
   applyFilter(){
     if((parseFloat(this.listLimit) == parseInt(this.listLimit)) && !isNaN(this.listLimit) && this.listLimit>0 && this.listLimit<=this.usersCount) {
-      this.listStart = 0;
-      this.listEnd = this.listStart + this.listLimit;
+      //this.listStart = 0;
+      //this.listEnd = this.listStart + this.listLimit;
       this.validInp = true;
+      this.listPaging(this.usersCount, this.listLimit);
+      console.log(this.listPages);
+      this.listStart = this.listPages[0].listStart;
+      this.listEnd = this.listPages[0].listEnd;
+      this.listActivePage = this.listPages[0].index;
     }else{
       this.validInp = false;
     }
@@ -62,8 +71,31 @@ export class ManagementComponent implements OnInit {
 
   removeFilter(){
       this.listStart = 0;
-      this.listEnd = this.listLimit = this.usersCount
+      this.listEnd = this.listLimit = this.usersCount;
+      this.listPages = [{index: 0, listStart: 0, listEnd: this.usersCount }];
+      this.listActivePage = this.listPages[0].index;
       this.validInp = true;
+  }
+
+  listPaging(end, limit){
+    this.listPages = [];
+    let arrLen = (end% limit == 0) ? Math.floor(end/ limit) : Math.floor(end/ limit) + 1;
+    console.log(end, limit, arrLen);
+    let first = 0;
+    for(let i=arrLen; i>0; i--){
+      this.listPages.push({
+        index: arrLen - i,
+        listStart: first,
+        listEnd: (first + limit) > end ? (first +(end% limit)) : (first + limit)
+      }); 
+      first = first + limit;
+    }
+  }
+
+  nagivatePage(index){
+    this.listStart = this.listPages[index].listStart;
+    this.listEnd = this.listPages[index].listEnd;
+    this.listActivePage = index;
   }
 
   deleteUser(user){
@@ -78,6 +110,16 @@ export class ManagementComponent implements OnInit {
         return false;
       });
      }
+  }
+
+  ngAfterViewChecked(){
+    if(this.as.isNewlyLoaded || this.as.permission == undefined || this.as.permission == '' || (this.as.permission != 'admin' && this.as.permission != 'moderator')){
+      this.rt.navigate(['/profile']);
+    }
+  }
+
+  ngOnDestroy(){
+    this.as.refreshLocalUser();
   }
 
 }

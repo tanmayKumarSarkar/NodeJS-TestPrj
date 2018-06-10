@@ -1,4 +1,4 @@
-<div class="container" >
+<div *ngIf="this.as.loggedIn() && this.as.canMngRole()" class="container" >
   <div class="jumbotron text-center">
       <h1 class="display-4">User Management Site</h1>
       <p class="">Welcome to my Dummy Site!! Manage you business here....</p>
@@ -56,6 +56,14 @@
         </tbody>
       </table>
       <!--Table-->
+
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <li class="page-item"><a class="page-link" disabled>Previous</a></li>
+                <li *ngFor="let page of listPages" class="page-item" (click)="nagivatePage(page.index)" [active]="index"><a class="page-link">{{page.index + 1}}</a></li>
+                <li class="page-item"><a class="page-link" disabled>Next</a></li>
+            </ul>
+        </nav>
 
       <div *ngIf="listEnd>5" class="row">
           <div class="col-md-6">

@@ -61,7 +61,7 @@ export class AuthService {
       .map(res=> res.json());
   }
 
-  getProfile(){
+  getProfileAPI(){
     let headers = new Headers();
     headers.append('Content-type', 'application/json');
     headers.append('Authorization', this.getToken());
@@ -103,7 +103,7 @@ export class AuthService {
     }else{
       if(this.loggedIn()){
         this.updateUser(this.jwtHelper.decodeToken(this.getToken()).userX);
-        return this.user = JSON.parse(localStorage.getItem('user'));
+        return this.user;// = JSON.parse(localStorage.getItem('user'));
       }else{
         localStorage.clear();
         return false;
@@ -118,10 +118,11 @@ export class AuthService {
   }
 
   updateUser(user){
-    this.user = user;
+    this.user = {id: user._id, name: user.name, username:user.username, email:user.email, permission: user.permission};
     localStorage.removeItem('user');
-    localStorage.setItem('user', JSON.stringify(user));
-    this.getLuser();
+    localStorage.setItem('user', JSON.stringify(this.user));
+    this.permission = this.user.permission;
+    //this.getLuser();
   }
 
   resetPassword(id){
@@ -192,7 +193,7 @@ export class AuthService {
       this.tokenTimeout = setTimeout(()=>{
         if(!$('#myModal').is(':visible')){
           $("#idleModal").modal('hide');
-          console.log($('#myModal').is(':visible'));
+          console.log(this.getToken());
           $("#tknModal").modal('show');
           this.tokenTimeout = 'complete';
         }
@@ -242,6 +243,19 @@ export class AuthService {
   getUserDetailAPI(id){
     return this.http.get(`${this.api}/api/users/${id}`)
       .map(res=> res.json());
+  }
+
+  refreshLocalUser(){
+    this.getProfileAPI().subscribe(profile =>{
+      if(profile.success){
+        this.updateUser(profile.user);
+      }else{
+        return false;
+      }
+    },err=>{
+      //localStorage.clear();
+      return false;
+    });
   }
 
   logout(){
