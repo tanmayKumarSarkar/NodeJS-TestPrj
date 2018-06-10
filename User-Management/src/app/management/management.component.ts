@@ -9,6 +9,7 @@ import { AuthService } from '../services/auth.service';
 })
 export class ManagementComponent implements OnInit {
 
+  Math;
   user: { id: String, name: String,username: String,email: String, permission: String};
   users;
   canEdit: boolean = false;
@@ -20,8 +21,11 @@ export class ManagementComponent implements OnInit {
   validInp = true;
   listPages = [];
   listActivePage;
+  
 
-  constructor(private as: AuthService, private rt: Router) { }
+  constructor(private as: AuthService, private rt: Router) { 
+    this.Math = Math;
+  }
 
   ngOnInit() {
     if(this.as.isNewlyLoaded){
