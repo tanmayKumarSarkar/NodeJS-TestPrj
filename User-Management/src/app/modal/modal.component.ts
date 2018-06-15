@@ -19,13 +19,18 @@ export class ModalComponent implements OnInit {
 
   username: String;
   password: String;
+  tknExpTime;
 
   ngOnInit() {
-
+    
   }
 
   ngAfterViewInit() {
-    
+  
+  }
+
+  ngAfterContentChecked() {
+    this.tknExpTime = this.as.getExpNtfTime();
   }
 
   logOut(){
@@ -68,6 +73,7 @@ export class ModalComponent implements OnInit {
       if(data.success){
         this.fm.show("LogIn Time Exeded", {cssClass:'alert-success', timeout:3000});
         this.as.storeUserData(data.token.split(' ')[1], data.user);
+        this.as.trackTokenAlive();
         //this.as.trackSession();
         //this.rt.navigate(['/profile']);
       }else{
@@ -75,7 +81,6 @@ export class ModalComponent implements OnInit {
         this.rt.navigate(['/login']);
       }
     });
-    this.as.trackTokenAlive();
   }
 
 

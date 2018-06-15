@@ -24,6 +24,7 @@ import { JwtHelper } from 'angular2-jwt';
 import { ModalComponent } from './modal/modal.component';
 import { ManagementComponent } from './management/management.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
+import { FilterPipe } from './filter.pipe';
 
 
 const appRoutes = [
@@ -52,7 +53,8 @@ const appRoutes = [
     NewPasswordComponent,
     ModalComponent,
     ManagementComponent,
-    EditUserComponent
+    EditUserComponent,
+    FilterPipe
   ],
   imports: [
     BrowserModule,

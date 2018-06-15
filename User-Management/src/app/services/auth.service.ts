@@ -13,7 +13,7 @@ export class AuthService {
   api: String = 'http://localhost:3000' || '';
   islogOutBtn: Boolean = false;
   tknExpTime;
-  tknExpNtfyTime = 1*60*1000;  //mili seconds
+  tknExpNtfyTime = 2*60*1000;  //mili seconds
   isNewlyLoaded = true;
   permission;
   sessionSub;
@@ -112,9 +112,19 @@ export class AuthService {
   }
 
   checkTokenExpiryTime(){
-    if(this.getToken() != null){
-    this.tknExpTime = ((this.jwtHelper.decodeToken(this.getToken()).exp) - (this.jwtHelper.decodeToken(this.getToken()).iat) - this.tknExpNtfyTime/1000)*1000;
+      if(this.getToken() != null){
+        this.tknExpTime = ((this.jwtHelper.decodeToken(this.getToken()).exp) - (Date.now()/ 1000) - this.tknExpNtfyTime/1000)*1000;
+      //this.tknExpTime = ((this.jwtHelper.decodeToken(this.getToken()).exp) - (this.jwtHelper.decodeToken(this.getToken()).iat) - this.tknExpNtfyTime/1000)*1000;
+      //console.log(this.tknExpTime, "EXP: ", (this.jwtHelper.decodeToken(this.getToken()).exp), "NOW: ", Date.now() / 1000,"To EXP: ",((this.jwtHelper.decodeToken(this.getToken()).exp)- (Date.now() / 1000)));
     }
+  }
+
+  getExpNtfTime(){
+    if(this.getToken() != null){
+      let exp = ( (this.jwtHelper.decodeToken(localStorage.getItem('id_token')).exp)- (Date.now() / 1000) );
+      //return exp <= 60 ? `${Math.floor(exp)} Seconds` : `${Math.floor(exp/60)} minute ${Math.floor((exp)/60-(Math.floor((exp)/60)))} Seconds`;
+      return exp <= 60 ? `${Math.floor(exp)} Seconds` : `${Math.floor(exp / 60)} Minute : ${Math.floor(exp % 60)} Seconds`;
+    }return false;
   }
 
   updateUser(user){
@@ -193,7 +203,7 @@ export class AuthService {
       this.tokenTimeout = setTimeout(()=>{
         if(!$('#myModal').is(':visible')){
           $("#idleModal").modal('hide');
-          console.log(this.getToken());
+          if(this.getToken() != null) 
           $("#tknModal").modal('show');
           this.tokenTimeout = 'complete';
         }
@@ -246,16 +256,18 @@ export class AuthService {
   }
 
   refreshLocalUser(){
-    this.getProfileAPI().subscribe(profile =>{
-      if(profile.success){
-        this.updateUser(profile.user);
-      }else{
+    if(!this.islogOutBtn){
+      this.getProfileAPI().subscribe(profile =>{
+        if(profile.success){
+          this.updateUser(profile.user);
+        }else{
+          return false;
+        }
+      },err=>{
+        //localStorage.clear();
         return false;
-      }
-    },err=>{
-      //localStorage.clear();
-      return false;
-    });
+      });
+    }
   }
 
   logout(){

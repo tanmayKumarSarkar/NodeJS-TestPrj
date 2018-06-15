@@ -20,6 +20,7 @@ mongoose.connect('mongodb://username:password@ds127139.mlab.com:27139/bookstore'
 // });
 
 const port = process.env.PORT || 3000;
+const environment = process.env.NODE_ENVIRONMENT;
 
 const app = express();
 
@@ -42,8 +43,11 @@ app.use('/api', users);
 
 
 app.get('*', (req, res)=>{
-	res.send('res')
-  //res.sendFile(path.join(__dirname, 'dist/index.html'));
+  if(environment == 'PROD'){
+    res.sendFile(path.join(__dirname, 'dist/index.html'));
+  }else{
+    res.send('res');
+  }
 });
 
 app.listen(port, ()=>{

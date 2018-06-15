@@ -6,9 +6,12 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const nodemailer = require('nodemailer');
 
+const environment = process.env.NODE_ENVIRONMENT;
+
 const key = "PrivateKey";
 const tokenExp = '1800s';
 const hurl = 'http://localhost:4200' || 'http://localhost:3000/api' ||'';
+
 
 const transporter = nodemailer.createTransport({
     service: 'Gmail',
@@ -31,7 +34,10 @@ router.post('/users', (req, res)=>{
         email: req.body.email,
         temptoken: jwt.sign({username:req.body.username, email: req.body.email}, key, {expiresIn: 604800})
     });
-    const eurl = `${hurl}/confirmation/${user.temptoken}`;
+    //const eurl = `${req.protocol}://${req.headers.host}/confirmation/${user.temptoken}`;
+    //const eurl = `${hurl}/confirmation/${user.temptoken}`;
+    //console.log(req.protocol , " ", req.headers.host, " ", req.get('Host'), " ", req.hostname);
+    const eurl = (environment == 'PROD') ? `${req.protocol}://${req.headers.host}/confirmation/${user.temptoken}` : `${hurl}/confirmation/${user.temptoken}`;
     if(validateRegister(user)){
         user.save((err, callback)=>{
             if (err) {
@@ -102,7 +108,9 @@ router.get('/resendconfirmation/:email', (req, res)=>{
                 if(err){
                     res.json({success: false, msg: 'Something Went Wrong, Please Try Again Later'});
                 }else{
-                    const eurl = `${hurl}/confirmation/${token}`;
+                    //const eurl = `${hurl}/confirmation/${token}`;
+                    //const eurl = `${req.protocol}://${req.headers.host}/confirmation/${token}`;
+                    const eurl = (environment == 'PROD') ? `${req.protocol}://${req.headers.host}/confirmation/${token}` : `${hurl}/confirmation/${token}`;
                     User.findOneAndUpdate({email: req.params.email}, {$set:{temptoken:token}}, {new: true}, (err, user)=>{
                         if(user == null) {
                             res.json({success: false, msg: 'User Not Registered, Please Register Yourself'});
@@ -179,7 +187,9 @@ router.post('/reset', (req, res)=>{
                 if(err){
                     res.json({success: false, msg: 'Something Went Wrong, Please Try Again Later'});
                 }else{
-                    const eurl = `${hurl}/new/${token}`;
+                    //const eurl = `${hurl}/new/${token}`;
+                    //const eurl = `${req.protocol}://${req.headers.host}/new/${token}`;
+                    const eurl = (environment == 'PROD') ? `${req.protocol}://${req.headers.host}/new/${token}` : `${hurl}/new/${token}`;
                     User.findOneAndUpdate(req.body, {$set:{temptoken:token}}, {new: true}, (err, user)=>{
                         if(user == null) {
                             res.json({success: false, msg: 'User Not Registered, Please Register Yourself'});

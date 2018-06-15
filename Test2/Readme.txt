@@ -45,8 +45,8 @@ db.customers.insert([
 	{first_name:"Steve", last_name:"Smith", gender:"male"}
 	])
 
-db.customers.update({_id:ObjectId("5ac10212548e69e987729478")}, {first_name:"Tanmay02", last_name:"K Sarkar"})	
-db.customers.update({_id:ObjectId("5ac10212548e69e987729478")}, {$set:{first_name:"Tanmay4"}})	
+db.customers.update({_id:ObjectId("5ac10212548e69e987729478")}, {first_name:"Tanmay02", last_name:"K Sarkar"})
+db.customers.update({_id:ObjectId("5ac10212548e69e987729478")}, {$set:{first_name:"Tanmay4"}})
 ..... {$inc:{age:5}} // ...... {$unset:{age:1}}  // incriment and usetting values
 db.customers.update({first_name:"Mary"}, {first_name:"Mary", last_name:"Samson"}, {upsert: true})	// if not present then insert
 
@@ -55,7 +55,7 @@ db.customers.remove({first_name:"Tanmay4"}, {justOne:true})
 
 db.customers.find({$or:[{first_name:"Tanmay"}, {first_name:"steve"}]})
 db.customers.find({age:{$lt:40}}).pretty() // $gt for greater than sign, $gte, $lte
-db.customers.find({"address.city":"Boston"}) 
+db.customers.find({"address.city":"Boston"})
 db.customers.find().sort({last_name:1}).pretty()    // 1 for ascending order // -1 for descending order
 
 db.customers.find().count()
@@ -84,4 +84,4 @@ var postSchema = new Schema({
 db.students.find({classes:{$in:['history,'geography']}})              // classes: ['history', 'geography', 'physics']
 
 tanmay.devacc@gmail.com9..87
-GMAIL_USER=tanmay.devacc@gmail.com GMAIL_PASS=9..7 nodemon start
+GMAIL_USER=tanmay.devacc@gmail.com GMAIL_PASS=9..7 ENVIRONMENT=PROD nodemon start
