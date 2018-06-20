@@ -85,3 +85,5 @@ db.students.find({classes:{$in:['history,'geography']}})              // classes
 
 tanmay.devacc@gmail.com9..87
 GMAIL_USER=tanmay.devacc@gmail.com GMAIL_PASS=9..7 ENVIRONMENT=PROD nodemon start
+
+MERN STACK - https://www.youtube.com/watch?v=rpJO0T08Bnc
